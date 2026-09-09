@@ -1,9 +1,11 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { MOTORISTA_ATUAL, useEntregasDoTenant, useStore } from '../data/store'
+import { useAuth } from '../data/auth'
 
 const navItems = [
   { to: '/motorista', label: 'Entregas', icon: '📋', end: true },
   { to: '/motorista/novo', label: 'Novo BDO', icon: '📷', end: true },
+  { to: '/motorista/relatorio', label: 'Relatório', icon: '🧾', end: true },
   { to: '/motorista/sincronizacao', label: 'Sincronizar', icon: '🔄', end: true },
 ]
 
@@ -11,10 +13,17 @@ export default function MotoristaLayout() {
   const { offline, setOffline } = useStore()
   const entregas = useEntregasDoTenant()
   const pendentes = entregas.filter((e) => e.pendenteSincronizacao).length
+  const { sair } = useAuth()
+  const navigate = useNavigate()
+
+  function handleSair() {
+    sair()
+    navigate('/', { replace: true })
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-100">
-      <header className="border-b border-slate-200 bg-white px-4 py-3">
+      <header className="border-b border-slate-200 bg-white px-4 py-3 print:hidden">
         <div className="mx-auto flex max-w-md items-center justify-between">
           <div>
             <Link to="/" className="text-xs font-semibold uppercase tracking-wide text-blue-700">
@@ -49,7 +58,7 @@ export default function MotoristaLayout() {
         <Outlet />
       </main>
 
-      <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white">
+      <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white print:hidden">
         <div className="mx-auto flex max-w-md">
           {navItems.map((item) => (
             <NavLink
@@ -66,6 +75,14 @@ export default function MotoristaLayout() {
               {item.label}
             </NavLink>
           ))}
+          <button
+            type="button"
+            onClick={handleSair}
+            className="flex flex-1 flex-col items-center gap-0.5 py-2 text-xs font-medium text-slate-500"
+          >
+            <span className="text-lg">↩</span>
+            Sair
+          </button>
         </div>
       </nav>
     </div>

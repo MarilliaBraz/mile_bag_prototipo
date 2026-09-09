@@ -36,6 +36,10 @@ export interface ConviteAdministrador {
   usadoEm?: string
 }
 
+// RF21 (regenerado 2026-09-09): via principal é o recebimento automático por
+// e-mail; a fotografia (HU01) passa a via de contingência.
+export type BdoOrigem = 'FOTO_MANUAL' | 'EMAIL_AUTOMATICO'
+
 export interface Bdo {
   id: string
   numero: string
@@ -43,6 +47,10 @@ export interface Bdo {
   enderecoEntrega: string
   companhiaAerea: string
   telefonePassageiro?: string
+  emailPassageiro?: string
+  etiquetaBagagem?: string
+  origem: BdoOrigem
+  dataCaptura: string
 }
 
 export interface BagagemCarona {
@@ -56,18 +64,67 @@ export interface BagagemCarona {
 export interface TrechoPedagio {
   praca: string
   valor: number
+  semValorCadastrado?: boolean
 }
 
-export interface Viagem {
+// HU04 (regenerado 2026-09-09): "rota congelada" vira Trajeto reconstruído —
+// sequência de CalculoRota + CheckpointGps, consolidada só no encerramento.
+export type OrigemSelecaoRota = 'sugerida' | 'propria'
+
+export interface CalculoRota {
   id: string
-  entregaId: string
   kmIda: number
   kmVolta: number
   pedagios: TrechoPedagio[]
   tempoEstimadoMin: number
-  rotaPropria: boolean
+  origemSelecao: OrigemSelecaoRota
   justificativaRotaPropria?: string
-  iniciadaEm: string
+  dataHora: string
+  ehRotaInicial: boolean
+}
+
+export type TipoCheckpoint = 'partida' | 'a_caminho' | 'chegada' | 'comprovante' | 'ocorrencia'
+
+export interface CheckpointGps {
+  id: string
+  tipo: TipoCheckpoint
+  lat: number | null
+  lng: number | null
+  dataHora: string
+  ausente: boolean
+}
+
+// HU17: correção pontual de um valor final consolidado do trajeto — registro
+// aditivo, nunca sobrescreve o Trajeto nem ajustes anteriores.
+export type CampoAjuste = 'KM_IDA' | 'KM_VOLTA' | 'TARIFA_APLICADA' | 'VALOR_PEDAGIO'
+
+export interface AjusteViagem {
+  id: string
+  trajetoId: string
+  campo: CampoAjuste
+  valorAnterior: string
+  valorNovo: string
+  justificativa: string
+  motoristaId: string
+  motoristaNome: string
+  criadoEm: string
+}
+
+export type TrajetoStatus = 'em_execucao' | 'encerrado'
+
+export interface Trajeto {
+  id: string
+  entregaId: string
+  status: TrajetoStatus
+  dataInicio: string
+  calculosRota: CalculoRota[]
+  checkpoints: CheckpointGps[]
+  kmIdaFinal: number | null
+  kmVoltaFinal: number | null
+  pracasPedagioFinal: TrechoPedagio[] | null
+  tempoFinalMin: number | null
+  justificativaDivergencia?: string
+  ajustes: AjusteViagem[]
 }
 
 export interface ComprovanteEntrega {
@@ -86,6 +143,30 @@ export interface Ocorrencia {
   registradaEm: string
 }
 
+// HU18 — mensageria motorista-passageiro (WhatsApp + e-mail), registro aditivo.
+export type AutorMensagem = 'MOTORISTA' | 'PASSAGEIRO' | 'SISTEMA'
+export type CanalMensagem = 'WHATSAPP' | 'EMAIL'
+export type TipoMensagem = 'MANUAL' | 'AUTOMATICA'
+export type StatusEnvioMensagem = 'ENVIADA' | 'FALHOU' | 'RECEBIDA'
+export type TipoEventoMensagem =
+  | 'VIAGEM_INICIADA'
+  | 'A_CAMINHO'
+  | 'CHEGADA'
+  | 'COMPROVANTE_REGISTRADO'
+  | 'OCORRENCIA_REGISTRADA'
+
+export interface Mensagem {
+  id: string
+  entregaId: string
+  autor: AutorMensagem
+  canal: CanalMensagem
+  tipo: TipoMensagem
+  conteudo: string
+  statusEnvio: StatusEnvioMensagem
+  criadoEm: string
+  tipoEvento?: TipoEventoMensagem
+}
+
 export interface Entrega {
   id: string
   tenantId: string
@@ -94,9 +175,12 @@ export interface Entrega {
   motoristaNome?: string
   status: EntregaStatus
   bagagensCarona: BagagemCarona[]
-  viagem?: Viagem
+  // Um trajeto por tentativa (HU04) — no máximo um com status 'em_execucao'
+  // por vez (FR-005); reaberturas (HU07) podem acumular vários encerrados.
+  trajetos: Trajeto[]
   comprovante?: ComprovanteEntrega
   ocorrencias: Ocorrencia[]
+  mensagens: Mensagem[]
   criadaEm: string
   pendenteSincronizacao?: boolean
 }
@@ -147,4 +231,8 @@ export interface ConfiguracaoTenant {
   basesAeroportuarias: string[]
   companhiasAtendidas: string[]
   periodicidadeFechamento: PeriodicidadeFechamento
+  // HU04/RN14 — limiar de divergência entre a rota inicialmente sugerida e a
+  // quilometragem final consolidada do trajeto (o que for maior dos dois).
+  limiarDivergenciaPercentual: number
+  limiarDivergenciaKm: number
 }

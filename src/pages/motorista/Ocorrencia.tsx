@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useConfiguracaoTenant, useStore } from '../../data/store'
+import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
 
 export default function Ocorrencia() {
   const { id } = useParams<{ id: string }>()
@@ -8,9 +8,12 @@ export default function Ocorrencia() {
   const { entregas, registrarOcorrencia } = useStore()
   const configuracao = useConfiguracaoTenant()
   const entrega = entregas.find((e) => e.id === id)
+  const trajeto = entrega ? trajetoAtivo(entrega) : undefined
+  const divergencia = trajeto ? avaliarDivergencia(trajeto, configuracao) : null
 
   const [motivo, setMotivo] = useState('')
   const [observacao, setObservacao] = useState('')
+  const [justificativaDivergencia, setJustificativaDivergencia] = useState('')
   const [erro, setErro] = useState<string | null>(null)
 
   if (!entrega) {
@@ -48,8 +51,17 @@ export default function Ocorrencia() {
       setErro('Selecione um motivo do catálogo do tenant.')
       return
     }
+    if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
+      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar (RN14).')
+      return
+    }
     setErro(null)
-    registrarOcorrencia(entrega!.id, motivo, observacao.trim() || undefined)
+    registrarOcorrencia(
+      entrega!.id,
+      motivo,
+      observacao.trim() || undefined,
+      divergencia?.divergiu ? justificativaDivergencia.trim() : undefined,
+    )
     navigate(`/motorista/entregas/${entrega!.id}`)
   }
 
@@ -112,6 +124,22 @@ export default function Ocorrencia() {
               placeholder="Detalhes adicionais sobre a tentativa"
             />
           </label>
+
+          {divergencia?.divergiu && (
+            <label className="flex flex-col gap-1 text-sm">
+              <span className="font-medium text-amber-800">
+                ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
+                km) — justifique antes de encerrar esta tentativa (RN14)
+              </span>
+              <textarea
+                value={justificativaDivergencia}
+                onChange={(e) => setJustificativaDivergencia(e.target.value)}
+                rows={2}
+                className="rounded-lg border border-amber-300 px-3 py-2 text-sm"
+                placeholder="Ex.: desvio por obra na via, trânsito intenso..."
+              />
+            </label>
+          )}
 
           {erro && <p className="text-xs font-medium text-red-600">{erro}</p>}
 

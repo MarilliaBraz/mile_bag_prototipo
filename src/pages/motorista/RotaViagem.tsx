@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useStore } from '../../data/store'
+import { trajetoAtivo, useStore } from '../../data/store'
 import type { TrechoPedagio } from '../../types'
 
 interface OpcaoRota {
@@ -12,10 +12,10 @@ interface OpcaoRota {
   pedagios: TrechoPedagio[]
 }
 
-// Gera 2-3 alternativas de rota mock, de forma determinística a partir do id
-// da entrega (mesma entrega sempre mostra as mesmas opções ao recarregar).
-function gerarOpcoesRota(entregaId: string): OpcaoRota[] {
-  let seed = 0
+// Gera 2-3 alternativas de rota mock. `variacao` diferencia o resultado entre
+// o cálculo inicial e um recálculo (HU04 FR-003) para a mesma entrega.
+function gerarOpcoesRota(entregaId: string, variacao = 0): OpcaoRota[] {
+  let seed = variacao
   for (let i = 0; i < entregaId.length; i += 1) seed = (seed * 31 + entregaId.charCodeAt(i)) % 1000
 
   const base = 6 + (seed % 12) // 6–17 km
@@ -50,10 +50,17 @@ function gerarOpcoesRota(entregaId: string): OpcaoRota[] {
 export default function RotaViagem() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { entregas, iniciarViagem } = useStore()
+  const { entregas, iniciarViagem, recalcularRota } = useStore()
   const entrega = entregas.find((e) => e.id === id)
+  const trajeto = entrega ? trajetoAtivo(entrega) : undefined
+  const modoRecalculo = !!trajeto
 
-  const opcoes = useMemo(() => (id ? gerarOpcoesRota(id) : []), [id])
+  // Recálculo usa uma variação diferente do primeiro cálculo, para não repetir
+  // exatamente as mesmas opções (só efeito visual do protótipo).
+  const opcoes = useMemo(
+    () => (id ? gerarOpcoesRota(id, modoRecalculo ? (trajeto?.calculosRota.length ?? 1) : 0) : []),
+    [id, modoRecalculo, trajeto?.calculosRota.length],
+  )
   const [opcaoEscolhidaId, setOpcaoEscolhidaId] = useState<string | null>(null)
   const [rotaPropria, setRotaPropria] = useState(false)
   const [justificativa, setJustificativa] = useState('')
@@ -69,41 +76,34 @@ export default function RotaViagem() {
     )
   }
 
-  if (entrega.viagem) {
-    return (
-      <div>
-        <p className="text-sm text-slate-600">
-          Esta entrega já tem uma viagem iniciada — o snapshot gravado não pode ser substituído (FR-004 de HU04).
-        </p>
-        <Link to={`/motorista/entregas/${entrega.id}`} className="mt-2 inline-block text-sm font-semibold text-blue-700">
-          ← Ver detalhes da entrega
-        </Link>
-      </div>
-    )
-  }
-
   const opcaoSelecionada = opcoes.find((o) => o.id === opcaoEscolhidaId) ?? null
-  const podeIniciar = rotaPropria ? justificativa.trim().length > 0 : opcaoSelecionada !== null
+  const podeConfirmar = rotaPropria ? justificativa.trim().length > 0 : opcaoSelecionada !== null
 
-  function iniciar() {
-    if (!podeIniciar) return
-    if (rotaPropria) {
-      iniciarViagem(entrega!.id, {
-        kmIda: 0,
-        kmVolta: 0,
-        pedagios: [],
-        tempoEstimadoMin: 0,
-        rotaPropria: true,
-        justificativaRotaPropria: justificativa.trim(),
-      })
-    } else if (opcaoSelecionada) {
-      iniciarViagem(entrega!.id, {
-        kmIda: opcaoSelecionada.kmIda,
-        kmVolta: opcaoSelecionada.kmVolta,
-        pedagios: opcaoSelecionada.pedagios,
-        tempoEstimadoMin: opcaoSelecionada.tempoEstimadoMin,
-        rotaPropria: false,
-      })
+  function confirmar() {
+    if (!podeConfirmar) return
+    const calculo = rotaPropria
+      ? {
+          kmIda: 0,
+          kmVolta: 0,
+          pedagios: [],
+          tempoEstimadoMin: 0,
+          origemSelecao: 'propria' as const,
+          justificativaRotaPropria: justificativa.trim(),
+        }
+      : opcaoSelecionada
+        ? {
+            kmIda: opcaoSelecionada.kmIda,
+            kmVolta: opcaoSelecionada.kmVolta,
+            pedagios: opcaoSelecionada.pedagios,
+            tempoEstimadoMin: opcaoSelecionada.tempoEstimadoMin,
+            origemSelecao: 'sugerida' as const,
+          }
+        : null
+    if (!calculo) return
+    if (modoRecalculo) {
+      recalcularRota(entrega!.id, calculo)
+    } else {
+      iniciarViagem(entrega!.id, calculo)
     }
     navigate(`/motorista/entregas/${entrega!.id}`)
   }
@@ -113,8 +113,14 @@ export default function RotaViagem() {
       <Link to={`/motorista/entregas/${entrega.id}`} className="text-xs font-semibold text-blue-700">
         ← BDO {entrega.bdo.numero}
       </Link>
-      <h1 className="mt-2 text-lg font-bold text-slate-900">Calcular e escolher rota</h1>
+      <h1 className="mt-2 text-lg font-bold text-slate-900">{modoRecalculo ? 'Recalcular rota' : 'Calcular e escolher rota'}</h1>
       <p className="mt-1 text-xs text-slate-500">Destino: {entrega.bdo.enderecoEntrega}</p>
+      {modoRecalculo && (
+        <p className="mt-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-800">
+          A viagem já está em execução — recalcular não trava nem apaga nada: o novo cálculo entra no histórico do
+          trajeto, junto com os anteriores (RD04/FR-004 de HU04).
+        </p>
+      )}
 
       <div className="mt-4 flex flex-col gap-2">
         {opcoes.map((opcao) => {
@@ -181,14 +187,16 @@ export default function RotaViagem() {
 
       <button
         type="button"
-        disabled={!podeIniciar}
-        onClick={iniciar}
+        disabled={!podeConfirmar}
+        onClick={confirmar}
         className="mt-4 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Iniciar viagem com esta rota
+        {modoRecalculo ? 'Usar esta rota a partir de agora' : 'Iniciar viagem com esta rota'}
       </button>
       <p className="mt-2 text-center text-xs text-slate-400">
-        A partir daqui, a quilometragem e os pedágios ficam congelados como base do pagamento (RN02).
+        {modoRecalculo
+          ? 'A quilometragem final será consolidada a partir do último cálculo usado, ao encerrar a entrega (RD04).'
+          : 'A quilometragem e os pedágios são consolidados ao encerrar a entrega, a partir do trajeto completo (RD04).'}
       </p>
     </div>
   )

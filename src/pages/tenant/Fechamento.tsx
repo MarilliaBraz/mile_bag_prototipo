@@ -19,8 +19,9 @@ export default function Fechamento() {
         <div>
           <h1 className="text-xl font-bold text-slate-900">Fechamento periódico</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Pagamento de entregas e reembolso de pedágios, calculados a partir dos snapshots de viagem congelados e das
-            tarifas/pedágios vigentes — sempre como totais separados (RN08), sem ajuste manual.
+            Pagamento de entregas e reembolso de pedágios, calculados a partir do trajeto final consolidado de cada
+            entrega (HU04) — usando o ajuste mais recente do motorista quando existir (HU17) — e das tarifas/pedágios
+            vigentes, sempre como totais separados (RN08).
           </p>
         </div>
         <button
