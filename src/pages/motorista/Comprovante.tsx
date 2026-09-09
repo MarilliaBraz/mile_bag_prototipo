@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useStore } from '../../data/store'
+import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
 
 // Coordenadas de referência em Goiânia — usadas só para simular a captura de
 // geolocalização (o protótipo não tem acesso real ao GPS do dispositivo).
@@ -11,12 +11,16 @@ export default function Comprovante() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { entregas, registrarComprovante } = useStore()
+  const configuracao = useConfiguracaoTenant()
   const entrega = entregas.find((e) => e.id === id)
+  const trajeto = entrega ? trajetoAtivo(entrega) : undefined
+  const divergencia = trajeto ? avaliarDivergencia(trajeto, configuracao) : null
 
   const [recebedorNome, setRecebedorNome] = useState('')
   const [fotoCapturada, setFotoCapturada] = useState(false)
   const [geolocalizacao, setGeolocalizacao] = useState<{ lat: number; lng: number } | null>(null)
   const [capturandoGeo, setCapturandoGeo] = useState(false)
+  const [justificativaDivergencia, setJustificativaDivergencia] = useState('')
   const [erro, setErro] = useState<string | null>(null)
 
   if (!entrega) {
@@ -75,12 +79,16 @@ export default function Comprovante() {
       setErro('Capture a geolocalização antes de confirmar. Se o GPS falhar, tente novamente — o restante do comprovante fica retido até lá.')
       return
     }
+    if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
+      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar (RN14).')
+      return
+    }
     setErro(null)
-    registrarComprovante(entrega!.id, {
-      recebedorNome,
-      dataHora: new Date().toISOString(),
-      geolocalizacao,
-    })
+    registrarComprovante(
+      entrega!.id,
+      { recebedorNome, dataHora: new Date().toISOString(), geolocalizacao },
+      divergencia?.divergiu ? justificativaDivergencia.trim() : undefined,
+    )
     navigate(`/motorista/entregas/${entrega!.id}`)
   }
 
@@ -149,6 +157,22 @@ export default function Comprovante() {
         </div>
 
         <p className="text-xs text-slate-400">Data/hora registradas automaticamente ao confirmar.</p>
+
+        {divergencia?.divergiu && (
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium text-amber-800">
+              ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
+              km) — justifique antes de encerrar (RN14)
+            </span>
+            <textarea
+              value={justificativaDivergencia}
+              onChange={(e) => setJustificativaDivergencia(e.target.value)}
+              rows={2}
+              className="rounded-lg border border-amber-300 px-3 py-2 text-sm"
+              placeholder="Ex.: desvio por obra na via, trânsito intenso..."
+            />
+          </label>
+        )}
 
         {erro && <p className="text-xs font-medium text-red-600">{erro}</p>}
 

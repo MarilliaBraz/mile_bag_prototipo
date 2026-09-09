@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useStore } from '../../data/store'
 import type { Bdo, Entrega } from '../../types'
 
-type CamposBdo = Omit<Bdo, 'id'>
+type CamposBdo = Omit<Bdo, 'id' | 'origem' | 'dataCaptura'>
 
 const CAMPOS_VAZIOS: CamposBdo = {
   numero: '',
@@ -11,6 +11,8 @@ const CAMPOS_VAZIOS: CamposBdo = {
   enderecoEntrega: '',
   companhiaAerea: '',
   telefonePassageiro: '',
+  emailPassageiro: '',
+  etiquetaBagagem: '',
 }
 
 // Exemplo plausível devolvido pela simulação do OCR — os valores são só um
@@ -24,6 +26,8 @@ function gerarExtracaoSimulada(): CamposBdo {
     enderecoEntrega: 'Rua 84, 215, Setor Sul, Goiânia - GO',
     companhiaAerea: 'LATAM',
     telefonePassageiro: '(62) 99456-7890',
+    emailPassageiro: 'beatriz.santos@example.com',
+    etiquetaBagagem: `LA${Math.floor(100000 + Math.random() * 899999)}`,
   }
 }
 
@@ -148,6 +152,24 @@ export default function CapturarBdo() {
             <input
               value={campos.telefonePassageiro}
               onChange={(e) => atualizarCampo('telefonePassageiro', e.target.value)}
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
+            />
+          </label>
+
+          <label className="text-xs font-semibold text-slate-600">
+            E-mail do passageiro (opcional)
+            <input
+              value={campos.emailPassageiro}
+              onChange={(e) => atualizarCampo('emailPassageiro', e.target.value)}
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
+            />
+          </label>
+
+          <label className="text-xs font-semibold text-slate-600">
+            Etiqueta da bagagem (opcional)
+            <input
+              value={campos.etiquetaBagagem}
+              onChange={(e) => atualizarCampo('etiquetaBagagem', e.target.value)}
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
             />
           </label>

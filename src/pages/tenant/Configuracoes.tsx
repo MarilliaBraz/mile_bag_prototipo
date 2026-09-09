@@ -152,6 +152,44 @@ export default function Configuracoes() {
             <option value="MENSAL">Mensal</option>
           </select>
         </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-4">
+          <h2 className="text-sm font-semibold text-slate-800">Limiar de divergência do trajeto (RN14)</h2>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Quando a quilometragem final consolidada (HU04) divergir da rota inicialmente sugerida em pelo menos um
+            desses dois valores — o que for maior —, o motorista precisa justificar antes de encerrar a entrega.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-4">
+            <label className="flex flex-col gap-1 text-xs font-medium text-slate-600">
+              Percentual (%)
+              <input
+                value={configuracao.limiarDivergenciaPercentual}
+                onChange={(e) => {
+                  atualizarConfiguracao({ limiarDivergenciaPercentual: Number(e.target.value) })
+                  avisarSalvo()
+                }}
+                type="number"
+                min="0"
+                step="1"
+                className="w-28 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-medium text-slate-600">
+              Quilometragem (km)
+              <input
+                value={configuracao.limiarDivergenciaKm}
+                onChange={(e) => {
+                  atualizarConfiguracao({ limiarDivergenciaKm: Number(e.target.value) })
+                  avisarSalvo()
+                }}
+                type="number"
+                min="0"
+                step="0.5"
+                className="w-28 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
+              />
+            </label>
+          </div>
+        </div>
       </div>
 
       <p className={`mt-4 text-xs font-medium text-emerald-700 transition-opacity ${salvo ? 'opacity-100' : 'opacity-0'}`}>

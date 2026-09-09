@@ -1,11 +1,11 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useStore } from '../../data/store'
+import { trajetoAtivo, ultimoTrajetoEncerrado, useStore } from '../../data/store'
 import { entregaStatusInfo } from '../../data/statusLabels'
 
 export default function EntregaDetalhe() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { entregas, autoatribuirEntrega } = useStore()
+  const { entregas, autoatribuirEntrega, registrarCheckpoint } = useStore()
   const entrega = entregas.find((e) => e.id === id)
 
   if (!entrega) {
@@ -20,11 +20,15 @@ export default function EntregaDetalhe() {
   }
 
   const status = entregaStatusInfo[entrega.status]
+  const trajeto = trajetoAtivo(entrega)
+  const trajetoEncerrado = ultimoTrajetoEncerrado(entrega)
+  const ultimoCalculo = trajeto?.calculosRota[trajeto.calculosRota.length - 1]
+  const marcos = trajeto?.checkpoints.filter((c) => c.tipo === 'a_caminho' || c.tipo === 'chegada') ?? []
 
   return (
     <div>
       <Link to="/motorista" className="text-xs font-semibold text-blue-700">
-        ← Minhas entregas
+        ← Painel de entregas
       </Link>
 
       <div className="mt-2 flex items-start justify-between gap-2">
@@ -41,6 +45,16 @@ export default function EntregaDetalhe() {
           <dd className="col-span-2 text-slate-800">{entrega.bdo.enderecoEntrega}</dd>
           <dt className="col-span-1 text-slate-500">Companhia aérea</dt>
           <dd className="col-span-2 text-slate-800">{entrega.bdo.companhiaAerea}</dd>
+          {entrega.bdo.etiquetaBagagem && (
+            <>
+              <dt className="col-span-1 text-slate-500">Etiqueta</dt>
+              <dd className="col-span-2 text-slate-800">{entrega.bdo.etiquetaBagagem}</dd>
+            </>
+          )}
+          <dt className="col-span-1 text-slate-500">Origem do BDO</dt>
+          <dd className="col-span-2 text-slate-800">
+            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail (RF21)' : '📷 Fotografado (HU01)'}
+          </dd>
           {entrega.motoristaNome && (
             <>
               <dt className="col-span-1 text-slate-500">Motorista</dt>
@@ -49,6 +63,15 @@ export default function EntregaDetalhe() {
           )}
         </dl>
       </div>
+
+      {/* HU18/HU21 — conversa e ligação ficam no mesmo lugar (RI15) */}
+      <Link
+        to={`/motorista/entregas/${entrega.id}/conversa`}
+        className="mt-3 flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-sm hover:border-blue-300"
+      >
+        <span className="font-semibold text-slate-800">💬 Conversa e ligação com o passageiro</span>
+        <span className="text-xs font-semibold text-blue-700">Abrir →</span>
+      </Link>
 
       {/* Ações contextuais conforme o estado do ciclo de vida (RD05) */}
       <div className="mt-4 flex flex-col gap-2">
@@ -71,27 +94,71 @@ export default function EntregaDetalhe() {
           </Link>
         )}
 
-        {entrega.status === 'EM_ANDAMENTO' && entrega.viagem && (
+        {entrega.status === 'EM_ANDAMENTO' && trajeto && ultimoCalculo && (
           <>
             <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
-              <p className="font-semibold text-slate-800">Viagem congelada</p>
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-slate-800">Trajeto em execução</p>
+                <Link to={`/motorista/entregas/${entrega.id}/rota`} className="text-xs font-semibold text-blue-700 hover:underline">
+                  Recalcular rota (HU04)
+                </Link>
+              </div>
               <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
-                <dt>Km ida / volta</dt>
+                <dt>Km ida / volta (atual)</dt>
                 <dd>
-                  {entrega.viagem.kmIda} km / {entrega.viagem.kmVolta} km
+                  {ultimoCalculo.kmIda} km / {ultimoCalculo.kmVolta} km
                 </dd>
                 <dt>Tempo estimado</dt>
-                <dd>{entrega.viagem.tempoEstimadoMin} min</dd>
+                <dd>{ultimoCalculo.tempoEstimadoMin} min</dd>
                 <dt>Pedágios</dt>
-                <dd>{entrega.viagem.pedagios.length === 0 ? 'Nenhum' : entrega.viagem.pedagios.map((p) => p.praca).join(', ')}</dd>
-                {entrega.viagem.rotaPropria && (
+                <dd>{ultimoCalculo.pedagios.length === 0 ? 'Nenhum' : ultimoCalculo.pedagios.map((p) => p.praca).join(', ')}</dd>
+                {trajeto.calculosRota.length > 1 && (
+                  <>
+                    <dt>Cálculos de rota</dt>
+                    <dd>{trajeto.calculosRota.length} registrados (histórico preservado — RD04)</dd>
+                  </>
+                )}
+                {ultimoCalculo.origemSelecao === 'propria' && (
                   <>
                     <dt>Rota própria</dt>
-                    <dd>{entrega.viagem.justificativaRotaPropria ?? 'Sem justificativa registrada'}</dd>
+                    <dd>{ultimoCalculo.justificativaRotaPropria ?? 'Sem justificativa registrada'}</dd>
                   </>
                 )}
               </dl>
             </div>
+
+            <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
+              <p className="font-semibold text-slate-800">Marcos de progresso (HU20)</p>
+              <p className="mt-1 text-xs text-slate-500">
+                Cada toque avisa automaticamente o passageiro pela conversa (HU18), quando houver contato disponível.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => registrarCheckpoint(entrega.id, 'a_caminho')}
+                  className="flex-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100"
+                >
+                  🚗 Estou a caminho
+                </button>
+                <button
+                  type="button"
+                  onClick={() => registrarCheckpoint(entrega.id, 'chegada')}
+                  className="flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+                >
+                  📍 Cheguei
+                </button>
+              </div>
+              {marcos.length > 0 && (
+                <ul className="mt-3 flex flex-col gap-1 text-xs text-slate-500">
+                  {marcos.map((m) => (
+                    <li key={m.id}>
+                      {m.tipo === 'a_caminho' ? '🚗 A caminho' : '📍 Chegada'} — {new Date(m.dataHora).toLocaleTimeString('pt-BR')}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
             <Link
               to={`/motorista/entregas/${entrega.id}/bagagem-carona`}
               className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
@@ -125,6 +192,32 @@ export default function EntregaDetalhe() {
               <dd>
                 {entrega.comprovante.geolocalizacao.lat.toFixed(4)}, {entrega.comprovante.geolocalizacao.lng.toFixed(4)}
               </dd>
+            </dl>
+          </div>
+        )}
+
+        {trajetoEncerrado && (
+          <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
+            <p className="font-semibold text-slate-800">Trajeto consolidado</p>
+            <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
+              <dt>Km ida / volta final</dt>
+              <dd>
+                {trajetoEncerrado.kmIdaFinal} km / {trajetoEncerrado.kmVoltaFinal} km
+              </dd>
+              <dt>Tempo final</dt>
+              <dd>{trajetoEncerrado.tempoFinalMin} min</dd>
+              {trajetoEncerrado.justificativaDivergencia && (
+                <>
+                  <dt>Justificativa de divergência</dt>
+                  <dd>{trajetoEncerrado.justificativaDivergencia}</dd>
+                </>
+              )}
+              {trajetoEncerrado.ajustes.length > 0 && (
+                <>
+                  <dt>Ajustes (HU17)</dt>
+                  <dd>{trajetoEncerrado.ajustes.length} registrado(s) — ver relatório quinzenal</dd>
+                </>
+              )}
             </dl>
           </div>
         )}
@@ -163,7 +256,7 @@ export default function EntregaDetalhe() {
         onClick={() => navigate('/motorista')}
         className="mt-6 text-xs font-medium text-slate-400 hover:text-slate-600"
       >
-        Voltar para a lista de entregas
+        Voltar para o painel de entregas
       </button>
     </div>
   )
