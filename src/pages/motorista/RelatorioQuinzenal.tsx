@@ -33,7 +33,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
       return
     }
     if (!justificativa.trim()) {
-      setErro('A justificativa é obrigatória para salvar um ajuste (FR-004).')
+      setErro('A justificativa é obrigatória para salvar um ajuste.')
       return
     }
     onSalvar(campo, valorAtual, numero, justificativa.trim())
@@ -55,7 +55,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
             <button
               type="button"
               onClick={() => setEditando(true)}
-              className="rounded-full border border-slate-300 px-2 py-0.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 print:hidden"
+              className="min-h-11 min-w-11 rounded-full border border-slate-300 px-3 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 print:hidden"
             >
               Corrigir
             </button>
@@ -85,7 +85,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
             <button
               type="button"
               onClick={salvar}
-              className="rounded-lg bg-blue-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-800"
+              className="min-h-11 rounded-lg bg-blue-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-800"
             >
               Salvar ajuste
             </button>
@@ -95,7 +95,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
                 setEditando(false)
                 setErro(null)
               }}
-              className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-white"
+              className="min-h-11 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-white"
             >
               Cancelar
             </button>
@@ -113,7 +113,7 @@ function CartaoEntrega({ entrega, trajeto, tarifaBase }: { entrega: Entrega; tra
     <div className="rounded-xl border border-slate-200 bg-white p-4 print:break-inside-avoid">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-slate-900">BDO {entrega.bdo.numero}</p>
-        <span className="text-xs text-slate-400">{new Date(trajeto.dataInicio).toLocaleDateString('pt-BR')}</span>
+        <span className="text-xs text-slate-500">{new Date(trajeto.dataInicio).toLocaleDateString('pt-BR')}</span>
       </div>
       <p className="text-xs text-slate-500">{entrega.bdo.passageiroNome}</p>
 
@@ -163,15 +163,15 @@ export default function RelatorioQuinzenal() {
     <div>
       <div className="flex items-start justify-between gap-2 print:hidden">
         <div>
-          <Link to="/motorista" className="text-xs font-semibold text-blue-700">
+          <Link to="/motorista" className="min-h-11 text-xs font-semibold text-blue-700">
             ← Painel de entregas
           </Link>
-          <h1 className="mt-2 text-lg font-bold text-slate-900">Relatório quinzenal (HU17)</h1>
+          <h1 className="mt-2 text-lg font-bold text-slate-900">Relatório quinzenal</h1>
         </div>
         <button
           type="button"
           onClick={() => window.print()}
-          className="shrink-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+          className="min-h-11 shrink-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
           🖨️ Imprimir
         </button>
@@ -184,8 +184,8 @@ export default function RelatorioQuinzenal() {
 
       <p className="mt-1 text-sm text-slate-600 print:hidden">
         Entregas com trajeto consolidado no período em andamento. Corrija qualquer valor calculado informando uma
-        justificativa (FR-004) — o valor final consolidado do trajeto nunca é sobrescrito (FR-005), e o fechamento
-        seguinte usa o valor ajustado mais recente (FR-006).
+        justificativa — o valor final consolidado do trajeto nunca é sobrescrito, e o fechamento seguinte usa o valor
+        ajustado mais recente.
       </p>
 
       {minhasComTrajeto.length === 0 && (

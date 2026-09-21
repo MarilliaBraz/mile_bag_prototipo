@@ -80,13 +80,13 @@ export default function CapturarBdo() {
         <div className="mt-4 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
           <p className="text-4xl">📄</p>
           <p className="mt-2 text-sm text-slate-600">
-            Fotografe o telex do BDO recebido da companhia aérea. O sistema extrai os campos automaticamente (RF02).
+            Fotografe o telex do BDO recebido da companhia aérea. O sistema extrai os campos automaticamente.
           </p>
           <button
             type="button"
             onClick={simularFotografia}
             disabled={extraindo}
-            className="mt-4 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:opacity-60"
+            className="mt-4 min-h-11 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:opacity-60"
           >
             {extraindo ? 'Extraindo dados do documento…' : '📷 Simular fotografia do BDO'}
           </button>
@@ -97,7 +97,7 @@ export default function CapturarBdo() {
         <form onSubmit={confirmarBdo} className="mt-4 flex flex-col gap-3">
           <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
             Confira e corrija os campos abaixo antes de confirmar. Nenhum BDO é salvo automaticamente a partir do
-            reconhecimento (RN01).
+            reconhecimento.
           </div>
 
           {duplicidade && (
@@ -177,14 +177,18 @@ export default function CapturarBdo() {
           <div className="mt-2 flex gap-2">
             <button
               type="button"
-              onClick={() => setFase('foto')}
-              className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              onClick={() => {
+                if (window.confirm('Os dados conferidos serão descartados. Refazer a foto do BDO?')) {
+                  setFase('foto')
+                }
+              }}
+              className="min-h-11 flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Refazer foto
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+              className="min-h-11 flex-1 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
             >
               Confirmar BDO
             </button>
@@ -209,7 +213,7 @@ export default function CapturarBdo() {
           <button
             type="button"
             onClick={() => navigate(`/motorista/entregas/${entregaCriada.id}`)}
-            className="text-xs font-medium text-slate-400 hover:text-slate-600"
+            className="min-h-11 text-xs font-medium text-slate-500 hover:text-slate-700"
           >
             Ver a entrega sem atribuir agora
           </button>

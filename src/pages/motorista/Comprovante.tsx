@@ -42,7 +42,7 @@ export default function Comprovante() {
           ← BDO {entrega.bdo.numero}
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          Esta entrega já possui um comprovante de entrega registrado — não é possível registrar um novo (FR-004).
+          Esta entrega já possui um comprovante de entrega registrado — não é possível registrar um novo.
         </div>
       </div>
     )
@@ -80,7 +80,7 @@ export default function Comprovante() {
       return
     }
     if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
-      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar (RN14).')
+      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar.')
       return
     }
     setErro(null)
@@ -99,7 +99,7 @@ export default function Comprovante() {
       </Link>
       <h1 className="mt-2 text-lg font-bold text-slate-900">Registrar comprovante de entrega</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Encerra a entrega com sucesso (RN04). Todos os campos abaixo são obrigatórios.
+        Encerra a entrega com sucesso. Todos os campos abaixo são obrigatórios.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4">
@@ -108,7 +108,7 @@ export default function Comprovante() {
           {fotoCapturada ? (
             <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-800">
               <span>✅ Foto capturada</span>
-              <button type="button" onClick={simularFoto} className="text-xs font-semibold underline">
+              <button type="button" onClick={simularFoto} className="min-h-11 text-xs font-semibold underline">
                 Refazer
               </button>
             </div>
@@ -116,7 +116,7 @@ export default function Comprovante() {
             <button
               type="button"
               onClick={simularFoto}
-              className="rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700"
+              className="min-h-11 rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700"
             >
               📷 Fotografar documento assinado
             </button>
@@ -140,7 +140,7 @@ export default function Comprovante() {
               <span>
                 📍 {geolocalizacao.lat.toFixed(4)}, {geolocalizacao.lng.toFixed(4)}
               </span>
-              <button type="button" onClick={capturarGeolocalizacao} className="text-xs font-semibold underline">
+              <button type="button" onClick={capturarGeolocalizacao} className="min-h-11 text-xs font-semibold underline">
                 Recapturar
               </button>
             </div>
@@ -149,20 +149,20 @@ export default function Comprovante() {
               type="button"
               onClick={capturarGeolocalizacao}
               disabled={capturandoGeo}
-              className="rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700 disabled:opacity-60"
+              className="min-h-11 rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700 disabled:opacity-60"
             >
               {capturandoGeo ? 'Capturando localização...' : '📍 Capturar localização atual'}
             </button>
           )}
         </div>
 
-        <p className="text-xs text-slate-400">Data/hora registradas automaticamente ao confirmar.</p>
+        <p className="text-xs text-slate-500">Data/hora registradas automaticamente ao confirmar.</p>
 
         {divergencia?.divergiu && (
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium text-amber-800">
               ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
-              km) — justifique antes de encerrar (RN14)
+              km) — justifique antes de encerrar
             </span>
             <textarea
               value={justificativaDivergencia}
@@ -178,7 +178,7 @@ export default function Comprovante() {
 
         <button
           type="submit"
-          className="mt-1 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
+          className="mt-1 min-h-11 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
         >
           Confirmar comprovante e encerrar entrega
         </button>

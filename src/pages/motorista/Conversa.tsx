@@ -17,7 +17,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
       <div className="my-2 flex justify-center">
         <span className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
           {mensagem.tipoEvento && EVENTO_ICONE[mensagem.tipoEvento]} {mensagem.conteudo}
-          <span className="text-slate-400">· {mensagem.canal === 'WHATSAPP' ? 'WhatsApp' : 'E-mail'}</span>
+          <span className="text-slate-500">· {mensagem.canal === 'WHATSAPP' ? 'WhatsApp' : 'E-mail'}</span>
         </span>
       </div>
     )
@@ -32,7 +32,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
         }`}
       >
         <p>{mensagem.conteudo}</p>
-        <p className={`mt-1 text-[10px] ${doMotorista ? 'text-blue-200' : 'text-slate-400'}`}>
+        <p className={`mt-1 text-[10px] ${doMotorista ? 'text-blue-200' : 'text-slate-500'}`}>
           {mensagem.canal === 'WHATSAPP' ? 'WhatsApp' : 'E-mail'} · {new Date(mensagem.criadoEm).toLocaleTimeString('pt-BR')}
           {mensagem.statusEnvio === 'FALHOU' && ' · falha no envio'}
         </p>
@@ -87,12 +87,12 @@ export default function Conversa() {
         {temWhatsapp ? (
           <a
             href={`tel:${entrega.bdo.telefonePassageiro!.replace(/\D/g, '')}`}
-            className="shrink-0 rounded-lg bg-emerald-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-800"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-emerald-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-800"
           >
             📞 Ligar
           </a>
         ) : (
-          <span className="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-400">
+          <span className="inline-flex min-h-11 shrink-0 items-center rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-500">
             📞 Sem telefone
           </span>
         )}
@@ -100,8 +100,7 @@ export default function Conversa() {
 
       {!contatoDisponivel && (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          Esta entrega não tem telefone nem e-mail do passageiro capturados no BDO — não há conversa disponível
-          (FR-006/FR-007 de HU18).
+          Esta entrega não tem telefone nem e-mail do passageiro capturados no BDO — não há conversa disponível.
         </div>
       )}
 
@@ -109,7 +108,7 @@ export default function Conversa() {
         <>
           <div className="mt-3 flex-1 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
             {mensagens.length === 0 ? (
-              <p className="mt-8 text-center text-xs text-slate-400">Nenhuma mensagem ainda — envie a primeira abaixo.</p>
+              <p className="mt-8 text-center text-xs text-slate-500">Nenhuma mensagem ainda — envie a primeira abaixo.</p>
             ) : (
               mensagens.map((m) => <Bolha key={m.id} mensagem={m} />)
             )}
@@ -118,7 +117,7 @@ export default function Conversa() {
           <button
             type="button"
             onClick={() => simularRespostaPassageiro(entrega.id)}
-            className="mt-2 self-start text-xs font-medium text-slate-400 hover:text-slate-600"
+            className="mt-2 min-h-11 self-start text-xs font-medium text-slate-500 hover:text-slate-700"
             title="No sistema real, chega por webhook do WhatsApp/e-mail — este botão só simula a resposta no protótipo."
           >
             ↺ Simular resposta do passageiro
@@ -129,12 +128,12 @@ export default function Conversa() {
               value={texto}
               onChange={(e) => setTexto(e.target.value)}
               placeholder="Escreva uma mensagem…"
-              className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              className="min-h-11 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
             <button
               type="submit"
               disabled={!texto.trim()}
-              className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
+              className="min-h-11 rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Enviar
             </button>

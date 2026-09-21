@@ -53,7 +53,7 @@ export default function EntregaDetalhe() {
           )}
           <dt className="col-span-1 text-slate-500">Origem do BDO</dt>
           <dd className="col-span-2 text-slate-800">
-            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail (RF21)' : '📷 Fotografado (HU01)'}
+            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail' : '📷 Fotografado'}
           </dd>
           {entrega.motoristaNome && (
             <>
@@ -79,18 +79,18 @@ export default function EntregaDetalhe() {
           <button
             type="button"
             onClick={() => autoatribuirEntrega(entrega.id)}
-            className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+            className="min-h-11 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
           >
-            Atribuir esta entrega a mim (HU02)
+            Atribuir esta entrega a mim
           </button>
         )}
 
         {(entrega.status === 'ATRIBUIDA' || entrega.status === 'REABERTA') && (
           <Link
             to={`/motorista/entregas/${entrega.id}/rota`}
-            className="rounded-lg bg-blue-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+            className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
           >
-            {entrega.status === 'REABERTA' ? 'Tentar entrega novamente: calcular rota' : 'Calcular rota e iniciar viagem'} (HU03/HU04)
+            {entrega.status === 'REABERTA' ? 'Tentar entrega novamente: calcular rota' : 'Calcular rota e iniciar viagem'}
           </Link>
         )}
 
@@ -99,8 +99,8 @@ export default function EntregaDetalhe() {
             <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
               <div className="flex items-center justify-between">
                 <p className="font-semibold text-slate-800">Trajeto em execução</p>
-                <Link to={`/motorista/entregas/${entrega.id}/rota`} className="text-xs font-semibold text-blue-700 hover:underline">
-                  Recalcular rota (HU04)
+                <Link to={`/motorista/entregas/${entrega.id}/rota`} className="min-h-11 text-xs font-semibold text-blue-700 hover:underline">
+                  Recalcular rota
                 </Link>
               </div>
               <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
@@ -128,22 +128,22 @@ export default function EntregaDetalhe() {
             </div>
 
             <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
-              <p className="font-semibold text-slate-800">Marcos de progresso (HU20)</p>
+              <p className="font-semibold text-slate-800">Marcos de progresso</p>
               <p className="mt-1 text-xs text-slate-500">
-                Cada toque avisa automaticamente o passageiro pela conversa (HU18), quando houver contato disponível.
+                Cada toque avisa automaticamente o passageiro pela conversa, quando houver contato disponível.
               </p>
               <div className="mt-3 flex gap-2">
                 <button
                   type="button"
                   onClick={() => registrarCheckpoint(entrega.id, 'a_caminho')}
-                  className="flex-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100"
+                  className="min-h-11 flex-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100"
                 >
                   🚗 Estou a caminho
                 </button>
                 <button
                   type="button"
                   onClick={() => registrarCheckpoint(entrega.id, 'chegada')}
-                  className="flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+                  className="min-h-11 flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
                 >
                   📍 Cheguei
                 </button>
@@ -161,21 +161,21 @@ export default function EntregaDetalhe() {
 
             <Link
               to={`/motorista/entregas/${entrega.id}/bagagem-carona`}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
-              Vincular bagagem carona (HU05)
+              Vincular bagagem carona
             </Link>
             <Link
               to={`/motorista/entregas/${entrega.id}/comprovante`}
-              className="rounded-lg bg-emerald-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
             >
-              Registrar comprovante de entrega (HU06)
+              Registrar comprovante de entrega
             </Link>
             <Link
               to={`/motorista/entregas/${entrega.id}/ocorrencia`}
-              className="rounded-lg border border-red-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-red-700 hover:bg-red-50"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-red-700 hover:bg-red-50"
             >
-              Registrar ocorrência — entrega não concretizada (HU07)
+              Registrar ocorrência — entrega não concretizada
             </Link>
           </>
         )}
@@ -214,7 +214,7 @@ export default function EntregaDetalhe() {
               )}
               {trajetoEncerrado.ajustes.length > 0 && (
                 <>
-                  <dt>Ajustes (HU17)</dt>
+                  <dt>Ajustes</dt>
                   <dd>{trajetoEncerrado.ajustes.length} registrado(s) — ver relatório quinzenal</dd>
                 </>
               )}
@@ -254,7 +254,7 @@ export default function EntregaDetalhe() {
       <button
         type="button"
         onClick={() => navigate('/motorista')}
-        className="mt-6 text-xs font-medium text-slate-400 hover:text-slate-600"
+        className="mt-6 min-h-11 text-xs font-medium text-slate-500 hover:text-slate-700"
       >
         Voltar para o painel de entregas
       </button>
