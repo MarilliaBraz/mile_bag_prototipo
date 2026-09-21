@@ -27,10 +27,10 @@ export default function EntregasLista() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold text-slate-900">Painel de entregas (HU19)</h1>
+        <h1 className="text-lg font-bold text-slate-900">Painel de entregas</h1>
         <Link
           to="/motorista/novo"
-          className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+          className="inline-flex min-h-11 items-center rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
         >
           + Capturar BDO
         </Link>
@@ -92,19 +92,19 @@ export default function EntregasLista() {
 
       <section className="mt-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-800">BDOs disponíveis (RF21)</h2>
+          <h2 className="text-sm font-semibold text-slate-800">BDOs disponíveis</h2>
           <button
             type="button"
             onClick={simularBdoPorEmail}
-            className="text-xs font-semibold text-blue-700 hover:underline"
-            title="Simula o recebimento automático de um BDO por e-mail (RF21) — no sistema real acontece sem ação do motorista."
+            className="min-h-11 text-xs font-semibold text-blue-700 hover:underline"
+            title="Simula o recebimento automático de um BDO por e-mail — no sistema real acontece sem ação do motorista."
           >
             ✉️ Simular BDO por e-mail
           </button>
         </div>
         <p className="mt-1 text-xs text-slate-500">
-          BDOs confirmados sem motorista responsável — fotografados (HU01) ou recebidos automaticamente por e-mail
-          (RF21). Toque para atribuir a você.
+          BDOs confirmados sem motorista responsável — fotografados ou recebidos automaticamente por e-mail.
+          Toque para atribuir a você.
         </p>
 
         {bdosDisponiveis.length === 0 && <p className="mt-2 text-sm text-slate-500">Nenhum BDO disponível no momento.</p>}
@@ -130,13 +130,13 @@ export default function EntregasLista() {
                 <button
                   type="button"
                   onClick={() => autoatribuirEntrega(entrega.id)}
-                  className="flex-1 rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
+                  className="min-h-11 flex-1 rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
                 >
                   Atribuir a mim
                 </button>
                 <Link
                   to={`/motorista/entregas/${entrega.id}`}
-                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  className="inline-flex min-h-11 items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   Ver detalhes
                 </Link>
