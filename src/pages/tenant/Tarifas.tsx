@@ -58,7 +58,7 @@ export default function Tarifas() {
       <h1 className="text-xl font-bold text-slate-900">Tabelas de tarifa</h1>
       <p className="mt-1 text-sm text-slate-500">
         Valores pagos por entrega. Em caso de conflito, a ordem de especificidade é motorista &gt; região &gt; padrão do
-        tenant (RN07, FR-004).
+        tenant.
       </p>
 
       <div className="mt-6 rounded-xl border border-slate-200 bg-white">

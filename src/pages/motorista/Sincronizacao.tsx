@@ -20,8 +20,8 @@ export default function Sincronizacao() {
       <h1 className="text-lg font-bold text-slate-900">Sincronização</h1>
       <p className="mt-1 text-sm text-slate-600">
         Enquanto o motorista está sem conexão, todas as ações continuam funcionando e ficam guardadas neste
-        dispositivo. Assim que a conexão volta, tudo é enviado automaticamente, na mesma ordem em que foi criado
-        (RF14/RNF02) — este botão só existe neste protótipo para simular esse momento de reconexão.
+        dispositivo. Assim que a conexão volta, tudo é enviado automaticamente, na mesma ordem em que foi criado —
+        este botão só existe neste protótipo para simular esse momento de reconexão.
       </p>
 
       <div
@@ -43,7 +43,7 @@ export default function Sincronizacao() {
             type="button"
             onClick={handleSincronizar}
             disabled={offline || pendentes.length === 0}
-            className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="min-h-11 rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
             title={offline ? 'Volte a ficar online para sincronizar' : undefined}
           >
             Sincronizar agora

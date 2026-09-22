@@ -118,7 +118,7 @@ export default function RotaViagem() {
       {modoRecalculo && (
         <p className="mt-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-800">
           A viagem já está em execução — recalcular não trava nem apaga nada: o novo cálculo entra no histórico do
-          trajeto, junto com os anteriores (RD04/FR-004 de HU04).
+          trajeto, junto com os anteriores.
         </p>
       )}
 
@@ -140,17 +140,17 @@ export default function RotaViagem() {
               <p className="font-semibold text-slate-800">{opcao.titulo}</p>
               <dl className="mt-2 grid grid-cols-3 gap-1 text-xs text-slate-600">
                 <div>
-                  <dt className="text-slate-400">Distância</dt>
+                  <dt className="text-slate-500">Distância</dt>
                   <dd>
                     {opcao.kmIda} km ida / {opcao.kmVolta} km volta
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-slate-400">Tempo estimado</dt>
+                  <dt className="text-slate-500">Tempo estimado</dt>
                   <dd>{opcao.tempoEstimadoMin} min</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-400">Pedágios</dt>
+                  <dt className="text-slate-500">Pedágios</dt>
                   <dd>{opcao.pedagios.length === 0 ? 'Nenhum' : opcao.pedagios.map((p) => p.praca).join(', ')}</dd>
                 </div>
               </dl>
@@ -170,18 +170,21 @@ export default function RotaViagem() {
         >
           <p className="font-semibold text-slate-800">Traçar rota própria</p>
           <p className="mt-1 text-xs text-slate-500">
-            Use quando nenhuma sugestão atende à situação real (RI03) — exige justificativa.
+            Use quando nenhuma sugestão atende à situação real — exige justificativa.
           </p>
         </button>
 
         {rotaPropria && (
-          <textarea
-            value={justificativa}
-            onChange={(e) => setJustificativa(e.target.value)}
-            placeholder="Justifique por que está traçando uma rota diferente das sugeridas…"
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
-            rows={3}
-          />
+          <label className="flex flex-col gap-1 text-xs font-medium text-slate-600">
+            Justificativa da rota própria
+            <textarea
+              value={justificativa}
+              onChange={(e) => setJustificativa(e.target.value)}
+              placeholder="Ex.: desvio por obra na via, trânsito intenso…"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              rows={3}
+            />
+          </label>
         )}
       </div>
 
@@ -189,14 +192,14 @@ export default function RotaViagem() {
         type="button"
         disabled={!podeConfirmar}
         onClick={confirmar}
-        className="mt-4 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-4 min-h-11 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {modoRecalculo ? 'Usar esta rota a partir de agora' : 'Iniciar viagem com esta rota'}
       </button>
-      <p className="mt-2 text-center text-xs text-slate-400">
+      <p className="mt-2 text-center text-xs text-slate-500">
         {modoRecalculo
-          ? 'A quilometragem final será consolidada a partir do último cálculo usado, ao encerrar a entrega (RD04).'
-          : 'A quilometragem e os pedágios são consolidados ao encerrar a entrega, a partir do trajeto completo (RD04).'}
+          ? 'A quilometragem final será consolidada a partir do último cálculo usado, ao encerrar a entrega.'
+          : 'A quilometragem e os pedágios são consolidados ao encerrar a entrega, a partir do trajeto completo.'}
       </p>
     </div>
   )

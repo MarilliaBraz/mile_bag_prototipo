@@ -62,7 +62,7 @@ export default function AtivarConvite() {
               <p className="text-sm text-slate-600">
                 Você foi convidado como administrador de <strong>{tenant.nome}</strong>.
               </p>
-              <p className="mt-1 text-xs text-slate-400">{convite.emailDestinatario}</p>
+              <p className="mt-1 text-xs text-slate-500">{convite.emailDestinatario}</p>
             </div>
 
             <div>
