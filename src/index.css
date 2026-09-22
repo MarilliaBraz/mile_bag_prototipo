@@ -14,3 +14,23 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* Alto contraste (RI da barra de acessibilidade do app do motorista): escurece
+   os tons de cinza mais claros e reforça bordas, sem depender de recolorir
+   cada componente individualmente. */
+[data-alto-contraste="true"] .text-slate-400,
+[data-alto-contraste="true"] .text-slate-500,
+[data-alto-contraste="true"] .text-slate-600 {
+  color: #0f172a;
+}
+
+[data-alto-contraste="true"] .border-slate-100,
+[data-alto-contraste="true"] .border-slate-200,
+[data-alto-contraste="true"] .border-slate-300 {
+  border-color: #1e293b;
+}
+
+[data-alto-contraste="true"] .bg-slate-50,
+[data-alto-contraste="true"] .bg-slate-100 {
+  background-color: #ffffff;
+}
