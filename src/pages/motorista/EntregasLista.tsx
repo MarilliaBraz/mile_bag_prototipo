@@ -39,7 +39,7 @@ export default function EntregasLista() {
       <section className="mt-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-800">Minhas entregas pendentes</h2>
-          <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-bold text-indigo-800">
+          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-700">
             {pendentes.length} pendente{pendentes.length === 1 ? '' : 's'}
           </span>
         </div>
@@ -117,11 +117,7 @@ export default function EntregasLista() {
                   <p className="text-sm font-semibold text-slate-900">BDO {entrega.bdo.numero}</p>
                   <p className="text-xs text-slate-500">{entrega.bdo.passageiroNome}</p>
                 </div>
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                    entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'
-                  }`}
-                >
+                <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
                   {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail' : '📷 Fotografado'}
                 </span>
               </div>
