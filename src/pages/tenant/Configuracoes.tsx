@@ -36,7 +36,7 @@ function TagListEditor({ titulo, descricao, itens, onChange }: TagListEditorProp
       <p className="mt-0.5 text-xs text-slate-500">{descricao}</p>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        {itens.length === 0 && <p className="text-xs text-slate-400">Nenhum item cadastrado.</p>}
+        {itens.length === 0 && <p className="text-xs text-slate-500">Nenhum item cadastrado.</p>}
         {itens.map((item) => (
           <span
             key={item}
@@ -46,7 +46,7 @@ function TagListEditor({ titulo, descricao, itens, onChange }: TagListEditorProp
             <button
               type="button"
               onClick={() => remover(item)}
-              className="text-slate-400 hover:text-red-600"
+              className="text-slate-500 hover:text-red-600"
               aria-label={`Remover ${item}`}
             >
               ×
@@ -60,13 +60,14 @@ function TagListEditor({ titulo, descricao, itens, onChange }: TagListEditorProp
           value={novoItem}
           onChange={(e) => setNovoItem(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
+          aria-label={`Adicionar item em ${titulo}`}
+          className="min-h-11 flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
           placeholder="Adicionar item..."
         />
         <button
           type="button"
           onClick={adicionar}
-          className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="min-h-11 rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
         >
           Adicionar
         </button>
@@ -89,14 +90,14 @@ export default function Configuracoes() {
     <div>
       <h1 className="text-xl font-bold text-slate-900">Configurações do tenant</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Parametrização exclusiva desta empresa — nenhum outro tenant vê ou edita estes valores (RNF01). Cada alteração
+        Parametrização exclusiva desta empresa — nenhum outro tenant vê ou edita estes valores. Cada alteração
         é aplicada imediatamente.
       </p>
 
       <div className="mt-6 flex flex-col gap-4">
         <TagListEditor
           titulo="Motivos de ocorrência"
-          descricao="Catálogo exibido ao motorista ao registrar que uma entrega não se concretizou (RD07)."
+          descricao="Catálogo exibido ao motorista ao registrar que uma entrega não se concretizou."
           itens={configuracao.motivosOcorrencia}
           onChange={(itens) => {
             atualizarConfiguracao({ motivosOcorrencia: itens })
@@ -106,7 +107,7 @@ export default function Configuracoes() {
 
         <TagListEditor
           titulo="Campos obrigatórios do formulário de baixa"
-          descricao="Refletido na interface de baixa exibida ao motorista (RI10)."
+          descricao="Refletido na interface de baixa exibida ao motorista."
           itens={configuracao.camposObrigatoriosBaixa}
           onChange={(itens) => {
             atualizarConfiguracao({ camposObrigatoriosBaixa: itens })
@@ -138,7 +139,7 @@ export default function Configuracoes() {
           <h2 className="text-sm font-semibold text-slate-800">Periodicidade do fechamento</h2>
           <p className="mt-0.5 text-xs text-slate-500">
             Um período já em andamento é concluído com a periodicidade anterior; a mudança só vale a partir do próximo
-            período (FR-008).
+            período.
           </p>
           <select
             value={configuracao.periodicidadeFechamento}
@@ -154,9 +155,9 @@ export default function Configuracoes() {
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-800">Limiar de divergência do trajeto (RN14)</h2>
+          <h2 className="text-sm font-semibold text-slate-800">Limiar de divergência do trajeto</h2>
           <p className="mt-0.5 text-xs text-slate-500">
-            Quando a quilometragem final consolidada (HU04) divergir da rota inicialmente sugerida em pelo menos um
+            Quando a quilometragem final consolidada divergir da rota inicialmente sugerida em pelo menos um
             desses dois valores — o que for maior —, o motorista precisa justificar antes de encerrar a entrega.
           </p>
           <div className="mt-3 flex flex-wrap gap-4">

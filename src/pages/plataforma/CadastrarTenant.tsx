@@ -57,7 +57,7 @@ export default function CadastrarTenant() {
       </Link>
       <h1 className="mt-2 text-xl font-bold text-slate-900">Cadastrar empresa assinante</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Sem implantação dedicada: o tenant é provisionado imediatamente após o cadastro (HU14).
+        Sem implantação dedicada: o tenant é provisionado imediatamente após o cadastro.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 flex max-w-md flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5">

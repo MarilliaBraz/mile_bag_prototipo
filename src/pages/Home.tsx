@@ -28,7 +28,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="mt-12 text-xs text-slate-400">
+        <p className="mt-12 text-xs text-slate-500">
           Baseado nas especificações em{' '}
           <code className="rounded bg-slate-100 px-1 py-0.5">mile_bag_documentacao/specs/</code>. Os dados digitados
           aqui ficam salvos só no seu navegador (localStorage) — nada é enviado a um servidor.

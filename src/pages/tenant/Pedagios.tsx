@@ -47,8 +47,8 @@ export default function Pedagios() {
       <h1 className="text-xl font-bold text-slate-900">Praças de pedágio</h1>
       <p className="mt-1 text-sm text-slate-500">
         Cadastro por tenant, com histórico de valores por data de vigência. O reembolso de uma viagem é sempre o dobro
-        do valor vigente — ida e volta (RN06) — e usa o valor congelado no snapshot da viagem, nunca um valor atualizado
-        depois (RN02).
+        do valor vigente — ida e volta — e usa o valor congelado no trajeto consolidado da viagem, nunca um valor
+        atualizado depois.
       </p>
 
       <div className="mt-6 rounded-xl border border-slate-200 bg-white">

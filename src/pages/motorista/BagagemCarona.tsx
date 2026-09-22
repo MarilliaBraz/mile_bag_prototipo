@@ -35,7 +35,7 @@ export default function BagagemCarona() {
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           Esta entrega já foi encerrada com comprovante de entrega — não é mais possível vincular uma bagagem carona a
-          ela (FR-002).
+          ela.
         </div>
       </div>
     )
@@ -65,7 +65,7 @@ export default function BagagemCarona() {
       <h1 className="mt-2 text-lg font-bold text-slate-900">Vincular bagagem carona</h1>
       <p className="mt-1 text-sm text-slate-600">
         Capture o BDO da bagagem adicional e informe apenas a quilometragem complementar até o endereço dela — ela
-        não é tratada como uma entrega separada (RN03).
+        não é tratada como uma entrega separada.
       </p>
 
       {entrega.bagagensCarona.length > 0 && (
@@ -88,7 +88,7 @@ export default function BagagemCarona() {
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             placeholder="GYN-48XXX"
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -96,7 +96,7 @@ export default function BagagemCarona() {
           <input
             value={passageiroNome}
             onChange={(e) => setPassageiroNome(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -104,7 +104,7 @@ export default function BagagemCarona() {
           <input
             value={enderecoEntrega}
             onChange={(e) => setEnderecoEntrega(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -113,7 +113,7 @@ export default function BagagemCarona() {
             value={companhiaAerea}
             onChange={(e) => setCompanhiaAerea(e.target.value)}
             placeholder="LATAM, GOL, Azul..."
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -125,7 +125,7 @@ export default function BagagemCarona() {
             min="0"
             step="0.1"
             placeholder="ex.: 1.8"
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
 
@@ -133,7 +133,7 @@ export default function BagagemCarona() {
 
         <button
           type="submit"
-          className="mt-1 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+          className="mt-1 min-h-11 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
         >
           Vincular bagagem carona
         </button>

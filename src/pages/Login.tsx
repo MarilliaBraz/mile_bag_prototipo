@@ -96,7 +96,7 @@ export default function Login() {
               {perfil.emoji}
             </span>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Entrar como</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Entrar como</p>
               <h2 className="text-lg font-bold text-slate-900">{perfil.subtitulo}</h2>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={entrando}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {entrando && (
                 <span
@@ -182,13 +182,13 @@ export default function Login() {
           </form>
 
           <div className="mt-8 border-t border-slate-200 pt-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Outros perfis</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Outros perfis</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {PERFIS_LISTA.filter((p) => p.id !== perfil.id).map((p) => (
                 <Link
                   key={p.id}
                   to={`/login/${p.id}`}
-                  className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-700"
+                  className="inline-flex min-h-11 items-center rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-700"
                 >
                   {p.emoji} {p.subtitulo}
                 </Link>

@@ -26,7 +26,7 @@ export default function IdentidadeVisual() {
       <h1 className="text-xl font-bold text-slate-900">Identidade visual</h1>
       <p className="mt-1 text-sm text-slate-500">
         Configure o logotipo e o cabeçalho do seu tenant. Essa identidade é aplicada automaticamente aos relatórios
-        de fechamento gerados (HU12) — não existe uma tela separada de "relatório" aqui, só a configuração.
+        de fechamento gerados — não existe uma tela separada de "relatório" aqui, só a configuração.
       </p>
 
       <div className="mt-6 flex flex-col gap-6 sm:flex-row">
@@ -58,7 +58,7 @@ export default function IdentidadeVisual() {
               onChange={(e) => setLogoIniciais(e.target.value)}
               className="mt-1 w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm uppercase"
             />
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-slate-500">
               Este protótipo simula o upload do logotipo com as iniciais em um círculo colorido.
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function IdentidadeVisual() {
 
           <button
             type="submit"
-            className="mt-2 self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+            className="mt-2 min-h-11 self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
           >
             Salvar identidade visual
           </button>
@@ -89,7 +89,7 @@ export default function IdentidadeVisual() {
         </form>
 
         <div className="flex w-full flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 sm:w-64">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Prévia</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Prévia</p>
           <span
             className="flex h-16 w-16 items-center justify-center rounded-full text-lg font-bold text-white shadow"
             style={{ backgroundColor: corPrimaria }}
@@ -97,7 +97,7 @@ export default function IdentidadeVisual() {
             {logoIniciais.slice(0, 3).toUpperCase() || '—'}
           </span>
           <p className="text-center text-sm font-semibold text-slate-800">{nomeExibicao || 'Nome do tenant'}</p>
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-slate-500">
             Assim aparece no topo do back-office e no cabeçalho dos relatórios de fechamento.
           </p>
         </div>

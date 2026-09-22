@@ -35,8 +35,7 @@ export default function Ocorrencia() {
           ← BDO {entrega.bdo.numero}
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          Esta entrega já foi encerrada com comprovante de entrega — não é possível registrar uma ocorrência para ela
-          (FR-003).
+          Esta entrega já foi encerrada com comprovante de entrega — não é possível registrar uma ocorrência para ela.
         </div>
       </div>
     )
@@ -52,7 +51,7 @@ export default function Ocorrencia() {
       return
     }
     if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
-      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar (RN14).')
+      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar.')
       return
     }
     setErro(null)
@@ -72,7 +71,7 @@ export default function Ocorrencia() {
       </Link>
       <h1 className="mt-2 text-lg font-bold text-slate-900">Registrar ocorrência</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Use quando a entrega não pôde ser concluída. O BDO é reaberto automaticamente para nova tentativa (RN05) — o
+        Use quando a entrega não pôde ser concluída. O BDO é reaberto automaticamente para nova tentativa — o
         histórico de tentativas anteriores fica preservado.
       </p>
 
@@ -93,7 +92,7 @@ export default function Ocorrencia() {
 
       {semMotivosCadastrados ? (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          O administrador do tenant ainda não cadastrou nenhum motivo de ocorrência (HU11). Não é possível registrar
+          O administrador do tenant ainda não cadastrou nenhum motivo de ocorrência. Não é possível registrar
           uma ocorrência até que ao menos um motivo exista no catálogo.
         </div>
       ) : (
@@ -103,7 +102,7 @@ export default function Ocorrencia() {
             <select
               value={motivo}
               onChange={(e) => setMotivo(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
               <option value="">Selecione um motivo...</option>
               {configuracao.motivosOcorrencia.map((m) => (
@@ -129,7 +128,7 @@ export default function Ocorrencia() {
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium text-amber-800">
                 ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
-                km) — justifique antes de encerrar esta tentativa (RN14)
+                km) — justifique antes de encerrar esta tentativa
               </span>
               <textarea
                 value={justificativaDivergencia}
@@ -145,7 +144,7 @@ export default function Ocorrencia() {
 
           <button
             type="submit"
-            className="mt-1 rounded-lg bg-red-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800"
+            className="mt-1 min-h-11 rounded-lg bg-red-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800"
           >
             Registrar ocorrência e reabrir BDO
           </button>

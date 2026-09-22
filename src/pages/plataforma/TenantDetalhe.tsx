@@ -50,7 +50,7 @@ export default function TenantDetalhe() {
       </dl>
 
       <div className="mt-6 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-800">Histórico de convites (HU15)</h2>
+        <h2 className="text-sm font-semibold text-slate-800">Histórico de convites</h2>
         {!temAdministradorAtivo && (
           <button
             type="button"
