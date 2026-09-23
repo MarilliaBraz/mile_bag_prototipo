@@ -17,7 +17,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
       <div className="my-2 flex justify-center">
         <span className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
           {mensagem.tipoEvento && EVENTO_ICONE[mensagem.tipoEvento]} {mensagem.conteudo}
-          <span className="text-slate-500">· {mensagem.canal === 'WHATSAPP' ? 'WhatsApp' : 'E-mail'}</span>
+          <span className="text-slate-500">· {mensagem.canal === 'TELEGRAM' ? 'Telegram' : 'E-mail'}</span>
         </span>
       </div>
     )
@@ -33,7 +33,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
       >
         <p>{mensagem.conteudo}</p>
         <p className={`mt-1 text-[10px] ${doMotorista ? 'text-blue-200' : 'text-slate-500'}`}>
-          {mensagem.canal === 'WHATSAPP' ? 'WhatsApp' : 'E-mail'} · {new Date(mensagem.criadoEm).toLocaleTimeString('pt-BR')}
+          {mensagem.canal === 'TELEGRAM' ? 'Telegram' : 'E-mail'} · {new Date(mensagem.criadoEm).toLocaleTimeString('pt-BR')}
           {mensagem.statusEnvio === 'FALHOU' && ' · falha no envio'}
         </p>
       </div>
@@ -58,9 +58,12 @@ export default function Conversa() {
     )
   }
 
-  const temWhatsapp = !!entrega.bdo.telefonePassageiro
+  const temTelefone = !!entrega.bdo.telefonePassageiro
   const temEmail = !!entrega.bdo.emailPassageiro
-  const contatoDisponivel = temWhatsapp || temEmail
+  const temTelegram = !!entrega.telegramVinculado
+  // FR-006: sem e-mail não há via de convite ao Telegram (RD02) — diferente
+  // da versão WhatsApp original, telefone não habilita mensageria nenhuma.
+  const contatoDisponivel = temEmail
   const mensagens = [...entrega.mensagens].sort((a, b) => a.criadoEm.localeCompare(b.criadoEm))
 
   function handleSubmit(event: FormEvent) {
@@ -79,12 +82,13 @@ export default function Conversa() {
         <div>
           <h1 className="text-lg font-bold text-slate-900">{entrega.bdo.passageiroNome}</h1>
           <p className="text-xs text-slate-500">
-            {temWhatsapp && '📱 WhatsApp'} {temWhatsapp && temEmail && '· '} {temEmail && '✉️ E-mail'}
+            {temEmail && '✉️ E-mail'} {temEmail && ' · '}
+            {temTelegram ? '📨 Telegram' : temEmail ? '📨 Telegram (convite enviado, aguardando)' : null}
           </p>
         </div>
 
-        {/* HU21 — ligação direta, no mesmo lugar da conversa (RI15) */}
-        {temWhatsapp ? (
+        {/* HU21 — ligação direta, no mesmo lugar da conversa (RI15) — usa o telefone, não depende da mensageria (HU18) */}
+        {temTelefone ? (
           <a
             href={`tel:${entrega.bdo.telefonePassageiro!.replace(/\D/g, '')}`}
             className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-emerald-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-800"
@@ -100,7 +104,7 @@ export default function Conversa() {
 
       {!contatoDisponivel && (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          Esta entrega não tem telefone nem e-mail do passageiro capturados no BDO — não há conversa disponível.
+          Esta entrega não tem e-mail do passageiro capturado no BDO — sem e-mail não há como convidar o passageiro ao Telegram, então não há conversa disponível.
         </div>
       )}
 
@@ -118,9 +122,9 @@ export default function Conversa() {
             type="button"
             onClick={() => simularRespostaPassageiro(entrega.id)}
             className="mt-2 min-h-11 self-start text-xs font-medium text-slate-500 hover:text-slate-700"
-            title="No sistema real, chega por webhook do WhatsApp/e-mail — este botão só simula a resposta no protótipo."
+            title="No sistema real, chega por webhook do Telegram/e-mail — este botão só simula a resposta no protótipo."
           >
-            ↺ Simular resposta do passageiro
+            ↺ Simular {temTelegram ? 'resposta' : 'toque no convite + resposta'} do passageiro
           </button>
 
           <form onSubmit={handleSubmit} className="mt-2 flex gap-2">
