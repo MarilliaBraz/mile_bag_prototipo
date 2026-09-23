@@ -140,7 +140,7 @@ export const seedEntregas: Entrega[] = [
         id: 'mensagem-002-1',
         entregaId: 'entrega-002',
         autor: 'SISTEMA',
-        canal: 'WHATSAPP',
+        canal: 'TELEGRAM',
         tipo: 'AUTOMATICA',
         conteudo: 'O motorista iniciou o trajeto até você.',
         statusEnvio: 'ENVIADA',
@@ -148,6 +148,9 @@ export const seedEntregas: Entrega[] = [
         tipoEvento: 'VIAGEM_INICIADA',
       },
     ],
+    // Cenário de demonstração: passageiro já tocou no convite antes desta
+    // mensagem (por isso ela já sai por Telegram, não só e-mail).
+    telegramVinculado: true,
     criadaEm: '2026-08-20T08:45:00',
   },
   {

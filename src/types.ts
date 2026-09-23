@@ -143,9 +143,12 @@ export interface Ocorrencia {
   registradaEm: string
 }
 
-// HU18 — mensageria motorista-passageiro (WhatsApp + e-mail), registro aditivo.
+// HU18 — mensageria motorista-passageiro (Telegram + e-mail), registro aditivo.
+// Telegram só fica disponível depois que o passageiro toca no link de convite
+// recebido por e-mail (ver Entrega.telegramVinculado) — trocado de WhatsApp
+// em 2026-09-23 para manter RNF08 (orçamento zerado) sem custo por conversa.
 export type AutorMensagem = 'MOTORISTA' | 'PASSAGEIRO' | 'SISTEMA'
-export type CanalMensagem = 'WHATSAPP' | 'EMAIL'
+export type CanalMensagem = 'TELEGRAM' | 'EMAIL'
 export type TipoMensagem = 'MANUAL' | 'AUTOMATICA'
 export type StatusEnvioMensagem = 'ENVIADA' | 'FALHOU' | 'RECEBIDA'
 export type TipoEventoMensagem =
@@ -183,6 +186,10 @@ export interface Entrega {
   mensagens: Mensagem[]
   criadaEm: string
   pendenteSincronizacao?: boolean
+  // HU18: true assim que o passageiro toca no link de convite ao Telegram
+  // (recebido por e-mail) e o bot recebe o /start daquela entrega — estado
+  // dinâmico, não um campo do BDO (diferente de telefone/e-mail).
+  telegramVinculado?: boolean
 }
 
 export type EscopoTarifa = 'TENANT' | 'MOTORISTA' | 'REGIAO'

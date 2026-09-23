@@ -148,11 +148,13 @@ const EVENTO_TEXTO: Record<TipoEventoMensagem, string> = {
 
 // HU18 FR-005: dispara notificação automática nos canais disponíveis (RD02) —
 // simplesmente não dispara nada quando não há contato (FR-006 não se aplica
-// ao SISTEMA, só ao envio manual do motorista).
+// ao SISTEMA, só ao envio manual do motorista). Telegram só entra depois que
+// o passageiro já tocou no convite (telegramVinculado) — antes disso, e-mail
+// é o único canal, mas carrega o convite (FR-003a).
 function gerarNotificacaoAutomatica(entrega: Entrega, tipoEvento: TipoEventoMensagem): Mensagem[] {
   const canais: CanalMensagem[] = []
-  if (entrega.bdo.telefonePassageiro) canais.push('WHATSAPP')
   if (entrega.bdo.emailPassageiro) canais.push('EMAIL')
+  if (entrega.telegramVinculado) canais.push('TELEGRAM')
   const agora = new Date().toISOString()
   return canais.map((canal) => ({
     id: gerarId('mensagem'),
@@ -589,8 +591,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // HU18 FR-003: escolhe o canal automaticamente — WhatsApp se houver
-  // telefone, e-mail se houver e-mail, os dois se ambos existirem.
+  // HU18 FR-003: escolhe o canal automaticamente — e-mail sempre que
+  // capturado, Telegram assim que o passageiro tiver iniciado a conversa
+  // (telegramVinculado). Sem e-mail, não há canal nenhum (FR-006/FR-007) —
+  // diferente da versão WhatsApp original, telefone não é mais usado aqui.
   const enviarMensagem: StoreActions['enviarMensagem'] = useCallback((entregaId, conteudo) => {
     if (!conteudo.trim()) return
     setState((s) => ({
@@ -598,8 +602,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       entregas: s.entregas.map((e) => {
         if (e.id !== entregaId) return e
         const canais: CanalMensagem[] = []
-        if (e.bdo.telefonePassageiro) canais.push('WHATSAPP')
         if (e.bdo.emailPassageiro) canais.push('EMAIL')
+        if (e.telegramVinculado) canais.push('TELEGRAM')
         if (canais.length === 0) return e // FR-007: sem contato disponível, nenhum envio
         const agora = new Date().toISOString()
         const novas: Mensagem[] = canais.map((canal) => ({
@@ -619,14 +623,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // Não faz parte de nenhum FR — só simula, no protótipo, a chegada de uma
   // resposta do passageiro (que no sistema real chegaria por webhook do
-  // WhatsApp/IMAP, sem o passageiro precisar de conta — RD14/FR-004).
+  // Telegram/IMAP, sem o passageiro precisar de conta — RD14/FR-004). Se o
+  // Telegram ainda não estava vinculado, este clique simula também o
+  // passageiro tocando no link de convite pela primeira vez (/start,
+  // research.md item 3 de HU18) — por isso a resposta já sai por lá.
   const simularRespostaPassageiro: StoreActions['simularRespostaPassageiro'] = useCallback((entregaId) => {
     setState((s) => ({
       ...s,
       entregas: s.entregas.map((e) => {
         if (e.id !== entregaId) return e
-        const canal: CanalMensagem = e.bdo.telefonePassageiro ? 'WHATSAPP' : 'EMAIL'
-        if (!e.bdo.telefonePassageiro && !e.bdo.emailPassageiro) return e
+        if (!e.bdo.emailPassageiro) return e
+        const canal: CanalMensagem = 'TELEGRAM'
         const mensagem: Mensagem = {
           id: gerarId('mensagem'),
           entregaId,
@@ -637,7 +644,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           statusEnvio: 'RECEBIDA',
           criadoEm: new Date().toISOString(),
         }
-        return { ...e, mensagens: [...e.mensagens, mensagem] }
+        return { ...e, telegramVinculado: true, mensagens: [...e.mensagens, mensagem] }
       }),
     }))
   }, [])
