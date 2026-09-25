@@ -1,3 +1,4 @@
+import Icone from '../../components/Icone'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useEntregasDoTenant, useStore } from '../../data/store'
@@ -29,9 +30,10 @@ export default function Sincronizacao() {
           offline ? 'border-amber-200 bg-amber-50 text-amber-800' : 'border-emerald-200 bg-emerald-50 text-emerald-800'
         }`}
       >
+        <Icone nome={offline ? 'semConexao' : 'conexao'} />{' '}
         {offline
-          ? '📴 Dispositivo simulado como offline. Novas ações continuam sendo salvas localmente, mas não podem ser sincronizadas agora.'
-          : '📶 Dispositivo simulado como online.'}
+          ? 'Dispositivo simulado como offline. Novas ações continuam sendo salvas localmente, mas não podem ser sincronizadas agora.'
+          : 'Dispositivo simulado como online.'}
       </div>
 
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">

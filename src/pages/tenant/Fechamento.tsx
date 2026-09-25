@@ -1,11 +1,15 @@
+import ConfirmarAcao from '../../components/ConfirmarAcao'
+import Icone from '../../components/Icone'
 import { useState } from 'react'
 import { useStore } from '../../data/store'
 
 export default function Fechamento() {
   const { fechamentos, gerarFechamento } = useStore()
   const [ultimoGerado, setUltimoGerado] = useState<string | null>(null)
+  const [confirmando, setConfirmando] = useState(false)
 
   function handleGerar() {
+    setConfirmando(false)
     const fechamento = gerarFechamento()
     setUltimoGerado(fechamento.id)
     setTimeout(() => setUltimoGerado(null), 2500)
@@ -26,7 +30,7 @@ export default function Fechamento() {
         </div>
         <button
           type="button"
-          onClick={handleGerar}
+          onClick={() => setConfirmando(true)}
           className="shrink-0 rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
         >
           Gerar novo fechamento
@@ -34,10 +38,19 @@ export default function Fechamento() {
       </div>
 
       {ultimoGerado && (
-        <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
-          ✓ Fechamento gerado sem ajuste manual.
+        <p role="status" className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
+          <Icone nome="check" /> Fechamento gerado sem ajuste manual.
         </p>
       )}
+
+      <ConfirmarAcao
+        aberto={confirmando}
+        titulo="Gerar novo fechamento?"
+        descricao="O fechamento reúne o pagamento de entregas e o reembolso de pedágios dos trajetos já consolidados, com as tarifas e pedágios vigentes."
+        rotuloConfirmar="Gerar fechamento"
+        aoConfirmar={handleGerar}
+        aoCancelar={() => setConfirmando(false)}
+      />
 
       <div className="mt-6 flex flex-col gap-3">
         {fechamentosOrdenados.length === 0 && <p className="text-sm text-slate-500">Nenhum fechamento gerado ainda.</p>}

@@ -1,3 +1,4 @@
+import Icone from '../../components/Icone'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MOTORISTA_ATUAL, ultimoTrajetoEncerrado, useStore, useEntregasDoTenant, valorVigente } from '../../data/store'
@@ -47,7 +48,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
     <div className="flex flex-col gap-2 border-b border-slate-100 py-2 last:border-b-0 print:break-inside-avoid">
       <div className="flex items-center justify-between text-sm">
         <span className="text-slate-500">
-          {CAMPO_LABEL[campo]} {temAjuste && <span className="ml-1 text-[10px] font-semibold text-amber-700">AJUSTADO</span>}
+          {CAMPO_LABEL[campo]} {temAjuste && <span className="ml-1 text-xs font-semibold text-amber-700">AJUSTADO</span>}
         </span>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-slate-800">{valorAtual.toFixed(2)}</span>
@@ -55,7 +56,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
             <button
               type="button"
               onClick={() => setEditando(true)}
-              className="min-h-11 min-w-11 rounded-full border border-slate-300 px-3 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 print:hidden"
+              className="min-h-11 min-w-11 rounded-full border border-slate-300 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-50 print:hidden"
             >
               Corrigir
             </button>
@@ -80,7 +81,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
             placeholder="Justificativa (obrigatória)"
             className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs"
           />
-          {erro && <p className="text-[11px] font-medium text-red-600">{erro}</p>}
+          {erro && <p role="alert" className="text-xs font-medium text-red-600">{erro}</p>}
           <div className="flex gap-2">
             <button
               type="button"
@@ -136,7 +137,7 @@ function CartaoEntrega({ entrega, trajeto, tarifaBase }: { entrega: Entrega; tra
           <p className="text-xs font-semibold text-slate-600">Histórico de ajustes</p>
           <ul className="mt-1 flex flex-col gap-1">
             {trajeto.ajustes.map((a) => (
-              <li key={a.id} className="text-[11px] text-slate-500">
+              <li key={a.id} className="text-xs text-slate-500">
                 {CAMPO_LABEL[a.campo]}: {a.valorAnterior} → {a.valorNovo} — "{a.justificativa}" ({a.motoristaNome},{' '}
                 {new Date(a.criadoEm).toLocaleString('pt-BR')})
               </li>
@@ -173,7 +174,7 @@ export default function RelatorioQuinzenal() {
           onClick={() => window.print()}
           className="min-h-11 shrink-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
-          🖨️ Imprimir
+          <Icone nome="impressora" /> Imprimir
         </button>
       </div>
 

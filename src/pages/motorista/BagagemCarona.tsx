@@ -129,7 +129,7 @@ export default function BagagemCarona() {
           />
         </label>
 
-        {erro && <p className="text-xs font-medium text-red-600">{erro}</p>}
+        {erro && <p role="alert" className="text-xs font-medium text-red-600">{erro}</p>}
 
         <button
           type="submit"

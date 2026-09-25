@@ -65,13 +65,14 @@ export default function Tarifas() {
         {tarifasOrdenadas.length === 0 ? (
           <p className="p-4 text-sm text-slate-500">Nenhuma tarifa cadastrada ainda.</p>
         ) : (
-          <table className="w-full text-left text-sm">
+          <div className="overflow-x-auto">
+<table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
               <tr>
-                <th className="px-4 py-2 font-medium">Escopo</th>
-                <th className="px-4 py-2 font-medium">Referência</th>
-                <th className="px-4 py-2 font-medium">Valor fixo</th>
-                <th className="px-4 py-2 font-medium">Valor por km</th>
+                <th scope="col" className="px-4 py-2 font-medium">Escopo</th>
+                <th scope="col" className="px-4 py-2 font-medium">Referência</th>
+                <th scope="col" className="px-4 py-2 font-medium">Valor fixo</th>
+                <th scope="col" className="px-4 py-2 font-medium">Valor por km</th>
               </tr>
             </thead>
             <tbody>
@@ -85,6 +86,7 @@ export default function Tarifas() {
               ))}
             </tbody>
           </table>
+</div>
         )}
       </div>
 
@@ -144,7 +146,7 @@ export default function Tarifas() {
           </label>
         </div>
 
-        {erro && <p className="mt-3 text-sm text-red-600">{erro}</p>}
+        {erro && <p role="alert" className="mt-3 text-sm text-red-600">{erro}</p>}
 
         <button
           type="submit"

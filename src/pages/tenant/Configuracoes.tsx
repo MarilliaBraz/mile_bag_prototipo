@@ -1,3 +1,4 @@
+import Icone from '../../components/Icone'
 import { useState, type KeyboardEvent } from 'react'
 import { useConfiguracaoTenant, useStore } from '../../data/store'
 import type { PeriodicidadeFechamento } from '../../types'
@@ -194,7 +195,7 @@ export default function Configuracoes() {
       </div>
 
       <p className={`mt-4 text-xs font-medium text-emerald-700 transition-opacity ${salvo ? 'opacity-100' : 'opacity-0'}`}>
-        ✓ Configuração salva
+        <Icone nome="check" /> Configuração salva
       </p>
     </div>
   )

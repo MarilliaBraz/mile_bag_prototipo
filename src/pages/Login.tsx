@@ -1,3 +1,4 @@
+import Icone from '../components/Icone'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../data/auth'
@@ -61,21 +62,27 @@ export default function Login() {
         </Link>
 
         <div className="relative">
-          <span className="text-5xl">{perfil.emoji}</span>
+          <Icone nome={perfil.icone} className="!h-14 !w-14" />
           <h1 className="mt-6 text-3xl font-bold leading-tight">{perfil.titulo}</h1>
           <p className="mt-4 max-w-sm text-blue-100">{perfil.descricaoLogin}</p>
 
           <ul className="mt-10 space-y-3 text-sm text-blue-100">
             <li className="flex items-center gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">✓</span>
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">
+                <Icone nome="check" />
+              </span>
               Fluxos completos das histórias de usuário do Milebag
             </li>
             <li className="flex items-center gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">✓</span>
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">
+                <Icone nome="check" />
+              </span>
               Dados isolados por perfil, salvos só neste navegador
             </li>
             <li className="flex items-center gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">✓</span>
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs">
+                <Icone nome="check" />
+              </span>
               Interface adaptada para uso em campo e no back-office
             </li>
           </ul>
@@ -93,7 +100,7 @@ export default function Login() {
 
           <div className="mt-4 flex items-center gap-3 lg:mt-0">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-700 text-xl text-white">
-              {perfil.emoji}
+              <Icone nome={perfil.icone} className="!h-6 !w-6" />
             </span>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Entrar como</p>
@@ -126,7 +133,7 @@ export default function Login() {
                 onChange={(e) => setUsuario(e.target.value)}
                 placeholder="admin"
                 aria-invalid={!!erro}
-                className="mt-1.5 block w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                className="mt-1.5 block w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
               />
             </div>
 
@@ -147,7 +154,7 @@ export default function Login() {
                   onChange={(e) => setSenha(e.target.value)}
                   placeholder="••••••"
                   aria-invalid={!!erro}
-                  className="block w-full rounded-lg border border-slate-300 px-3.5 py-2.5 pr-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  className="block w-full rounded-lg border border-slate-300 px-3.5 py-2.5 pr-11 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
                 <button
                   type="button"
@@ -190,7 +197,7 @@ export default function Login() {
                   to={`/login/${p.id}`}
                   className="inline-flex min-h-11 items-center rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-700"
                 >
-                  {p.emoji} {p.subtitulo}
+                  <Icone nome={p.icone} /> {p.subtitulo}
                 </Link>
               ))}
             </div>

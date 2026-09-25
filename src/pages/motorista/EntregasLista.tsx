@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
+import Icone, { type NomeIcone } from '../../components/Icone'
 import { marcoMaisRecente, useBdosDisponiveis, useMinhasEntregasPendentes, useStore } from '../../data/store'
 import { entregaStatusInfo } from '../../data/statusLabels'
 
-const MARCO_LABEL: Record<'a_caminho' | 'chegada', string> = {
-  a_caminho: '🚗 A caminho',
-  chegada: '📍 Chegou ao endereço',
+const MARCO_LABEL: Record<'a_caminho' | 'chegada', { icone: NomeIcone; texto: string }> = {
+  a_caminho: { icone: 'carro', texto: 'A caminho' },
+  chegada: { icone: 'pino', texto: 'Chegou ao endereço' },
 }
 
 export default function EntregasLista() {
@@ -71,7 +72,7 @@ export default function EntregasLista() {
                   <div className="mt-2 flex items-center gap-2">
                     {marco && (
                       <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
-                        {MARCO_LABEL[marco.tipo as 'a_caminho' | 'chegada']}
+                        <Icone nome={MARCO_LABEL[marco.tipo as 'a_caminho' | 'chegada'].icone} /> {MARCO_LABEL[marco.tipo as 'a_caminho' | 'chegada'].texto}
                       </span>
                     )}
                     {entrega.bagagensCarona.length > 0 && (
@@ -99,7 +100,7 @@ export default function EntregasLista() {
             className="min-h-11 text-xs font-semibold text-blue-700 hover:underline"
             title="Simula o recebimento automático de um BDO por e-mail — no sistema real acontece sem ação do motorista."
           >
-            ✉️ Simular BDO por e-mail
+            <Icone nome="email" /> Simular BDO por e-mail
           </button>
         </div>
         <p className="mt-1 text-xs text-slate-500">
@@ -118,7 +119,15 @@ export default function EntregasLista() {
                   <p className="text-xs text-slate-500">{entrega.bdo.passageiroNome}</p>
                 </div>
                 <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
-                  {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail' : '📷 Fotografado'}
+                  {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? (
+                    <>
+                      <Icone nome="email" /> Recebido por e-mail
+                    </>
+                  ) : (
+                    <>
+                      <Icone nome="camera" /> Fotografado
+                    </>
+                  )}
                 </span>
               </div>
               <p className="mt-2 text-xs text-slate-500">{entrega.bdo.enderecoEntrega}</p>
