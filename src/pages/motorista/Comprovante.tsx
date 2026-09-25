@@ -1,5 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import Ajuda from '../../components/Ajuda'
+import ConfirmarAcao from '../../components/ConfirmarAcao'
+import Icone from '../../components/Icone'
 import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
 
 // Coordenadas de referência em Goiânia — usadas só para simular a captura de
@@ -10,7 +13,7 @@ const LNG_BASE = -49.255
 export default function Comprovante() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { entregas, registrarComprovante } = useStore()
+  const { entregas, registrarComprovante, offline } = useStore()
   const configuracao = useConfiguracaoTenant()
   const entrega = entregas.find((e) => e.id === id)
   const trajeto = entrega ? trajetoAtivo(entrega) : undefined
@@ -22,6 +25,7 @@ export default function Comprovante() {
   const [capturandoGeo, setCapturandoGeo] = useState(false)
   const [justificativaDivergencia, setJustificativaDivergencia] = useState('')
   const [erro, setErro] = useState<string | null>(null)
+  const [confirmando, setConfirmando] = useState(false)
 
   if (!entrega) {
     return (
@@ -84,12 +88,23 @@ export default function Comprovante() {
       return
     }
     setErro(null)
+    setConfirmando(true)
+  }
+
+  function confirmarEnvio() {
+    setConfirmando(false)
     registrarComprovante(
       entrega!.id,
-      { recebedorNome, dataHora: new Date().toISOString(), geolocalizacao },
+      { recebedorNome, dataHora: new Date().toISOString(), geolocalizacao: geolocalizacao! },
       divergencia?.divergiu ? justificativaDivergencia.trim() : undefined,
     )
-    navigate(`/motorista/entregas/${entrega!.id}`)
+    navigate(`/motorista/entregas/${entrega!.id}`, {
+      state: {
+        aviso: offline
+          ? 'Comprovante salvo neste dispositivo. Ele será sincronizado quando houver conexão.'
+          : 'Comprovante registrado e entrega encerrada com sucesso.',
+      },
+    })
   }
 
   return (
@@ -101,13 +116,18 @@ export default function Comprovante() {
       <p className="mt-1 text-sm text-slate-600">
         Encerra a entrega com sucesso. Todos os campos abaixo são obrigatórios.
       </p>
+      <Ajuda>
+        <p>Fotografe o documento assinado, informe quem recebeu e capture a localização. A data e a hora são registradas automaticamente. Sem internet, o comprovante fica salvo no aparelho e é sincronizado depois.</p>
+      </Ajuda>
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4">
         <div className="flex flex-col gap-1 text-sm">
           <span className="font-medium text-slate-700">Foto do documento assinado</span>
           {fotoCapturada ? (
             <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-800">
-              <span>✅ Foto capturada</span>
+              <span>
+                <Icone nome="checkCirculo" /> Foto capturada
+              </span>
               <button type="button" onClick={simularFoto} className="min-h-11 text-xs font-semibold underline">
                 Refazer
               </button>
@@ -118,14 +138,18 @@ export default function Comprovante() {
               onClick={simularFoto}
               className="min-h-11 rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700"
             >
-              📷 Fotografar documento assinado
+              <Icone nome="camera" /> Fotografar documento assinado
             </button>
           )}
         </div>
 
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-slate-700">Nome do recebedor</span>
+          <span className="font-medium text-slate-700">
+            Nome do recebedor <span aria-hidden="true" className="text-red-700">*</span>
+          </span>
           <input
+            aria-required="true"
+            aria-invalid={!!erro && !recebedorNome.trim()}
             value={recebedorNome}
             onChange={(e) => setRecebedorNome(e.target.value)}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
@@ -138,7 +162,7 @@ export default function Comprovante() {
           {geolocalizacao ? (
             <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-800">
               <span>
-                📍 {geolocalizacao.lat.toFixed(4)}, {geolocalizacao.lng.toFixed(4)}
+                <Icone nome="pino" /> {geolocalizacao.lat.toFixed(4)}, {geolocalizacao.lng.toFixed(4)}
               </span>
               <button type="button" onClick={capturarGeolocalizacao} className="min-h-11 text-xs font-semibold underline">
                 Recapturar
@@ -151,7 +175,7 @@ export default function Comprovante() {
               disabled={capturandoGeo}
               className="min-h-11 rounded-lg border border-dashed border-slate-300 px-3 py-3 text-sm font-medium text-slate-600 hover:border-blue-400 hover:text-blue-700 disabled:opacity-60"
             >
-              {capturandoGeo ? 'Capturando localização...' : '📍 Capturar localização atual'}
+              {capturandoGeo ? 'Capturando localização...' : <><Icone nome="pino" /> Capturar localização atual</>}
             </button>
           )}
         </div>
@@ -161,7 +185,7 @@ export default function Comprovante() {
         {divergencia?.divergiu && (
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium text-amber-800">
-              ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
+              <Icone nome="alerta" /> Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
               km) — justifique antes de encerrar
             </span>
             <textarea
@@ -174,7 +198,11 @@ export default function Comprovante() {
           </label>
         )}
 
-        {erro && <p className="text-xs font-medium text-red-600">{erro}</p>}
+        {erro && (
+          <p role="alert" className="text-sm font-medium text-red-700">
+            {erro}
+          </p>
+        )}
 
         <button
           type="submit"
@@ -183,6 +211,15 @@ export default function Comprovante() {
           Confirmar comprovante e encerrar entrega
         </button>
       </form>
+
+      <ConfirmarAcao
+        aberto={confirmando}
+        titulo="Encerrar a entrega?"
+        descricao="O comprovante será registrado e a entrega será encerrada. Confira a foto e o nome de quem recebeu antes de continuar."
+        rotuloConfirmar="Encerrar entrega"
+        aoConfirmar={confirmarEnvio}
+        aoCancelar={() => setConfirmando(false)}
+      />
     </div>
   )
 }

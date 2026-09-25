@@ -1,3 +1,4 @@
+import Icone from '../../components/Icone'
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useStore } from '../../data/store'
@@ -78,7 +79,7 @@ export default function CapturarBdo() {
 
       {fase === 'foto' && (
         <div className="mt-4 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
-          <p className="text-4xl">📄</p>
+          <Icone nome="documento" className="!h-12 !w-12 text-slate-500" />
           <p className="mt-2 text-sm text-slate-600">
             Fotografe o telex do BDO recebido da companhia aérea. O sistema extrai os campos automaticamente.
           </p>
@@ -88,7 +89,7 @@ export default function CapturarBdo() {
             disabled={extraindo}
             className="mt-4 min-h-11 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 disabled:opacity-60"
           >
-            {extraindo ? 'Extraindo dados do documento…' : '📷 Simular fotografia do BDO'}
+            {extraindo ? 'Extraindo dados do documento…' : <><Icone nome="camera" /> Simular fotografia do BDO</>}
           </button>
         </div>
       )}
@@ -102,7 +103,7 @@ export default function CapturarBdo() {
 
           {duplicidade && (
             <div className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-800">
-              ⚠️ Já existe uma entrega registrada com este número de BDO. Confira antes de prosseguir para evitar
+              <Icone nome="alerta" /> Já existe uma entrega registrada com este número de BDO. Confira antes de prosseguir para evitar
               duplicidade.
             </div>
           )}

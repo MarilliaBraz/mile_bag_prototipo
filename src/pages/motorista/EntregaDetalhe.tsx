@@ -1,4 +1,6 @@
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import Icone from '../../components/Icone'
 import { trajetoAtivo, ultimoTrajetoEncerrado, useStore } from '../../data/store'
 import { entregaStatusInfo } from '../../data/statusLabels'
 
@@ -7,6 +9,8 @@ export default function EntregaDetalhe() {
   const navigate = useNavigate()
   const { entregas, autoatribuirEntrega, registrarCheckpoint } = useStore()
   const entrega = entregas.find((e) => e.id === id)
+  const localizacao = useLocation()
+  const [aviso, setAviso] = useState<string | null>((localizacao.state as { aviso?: string } | null)?.aviso ?? null)
 
   if (!entrega) {
     return (
@@ -31,6 +35,15 @@ export default function EntregaDetalhe() {
         ← Painel de entregas
       </Link>
 
+      {aviso && (
+        <div role="status" className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
+          <span>{aviso}</span>
+          <button type="button" onClick={() => setAviso(null)} className="min-h-11 px-2 text-xs font-semibold underline">
+            Fechar
+          </button>
+        </div>
+      )}
+
       <div className="mt-2 flex items-start justify-between gap-2">
         <div>
           <h1 className="text-lg font-bold text-slate-900">BDO {entrega.bdo.numero}</h1>
@@ -53,7 +66,15 @@ export default function EntregaDetalhe() {
           )}
           <dt className="col-span-1 text-slate-500">Origem do BDO</dt>
           <dd className="col-span-2 text-slate-800">
-            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? '✉️ Recebido por e-mail' : '📷 Fotografado'}
+            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? (
+              <>
+                <Icone nome="email" /> Recebido por e-mail
+              </>
+            ) : (
+              <>
+                <Icone nome="camera" /> Fotografado
+              </>
+            )}
           </dd>
           {entrega.motoristaNome && (
             <>
@@ -69,7 +90,9 @@ export default function EntregaDetalhe() {
         to={`/motorista/entregas/${entrega.id}/conversa`}
         className="mt-3 flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-sm hover:border-blue-300"
       >
-        <span className="font-semibold text-slate-800">💬 Conversa e ligação com o passageiro</span>
+        <span className="font-semibold text-slate-800">
+          <Icone nome="conversa" /> Conversa e ligação com o passageiro
+        </span>
         <span className="text-xs font-semibold text-blue-700">Abrir →</span>
       </Link>
 
@@ -138,21 +161,21 @@ export default function EntregaDetalhe() {
                   onClick={() => registrarCheckpoint(entrega.id, 'a_caminho')}
                   className="min-h-11 flex-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100"
                 >
-                  🚗 Estou a caminho
+                  <Icone nome="carro" /> Estou a caminho
                 </button>
                 <button
                   type="button"
                   onClick={() => registrarCheckpoint(entrega.id, 'chegada')}
                   className="min-h-11 flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
                 >
-                  📍 Cheguei
+                  <Icone nome="pino" /> Cheguei
                 </button>
               </div>
               {marcos.length > 0 && (
                 <ul className="mt-3 flex flex-col gap-1 text-xs text-slate-500">
                   {marcos.map((m) => (
                     <li key={m.id}>
-                      {m.tipo === 'a_caminho' ? '🚗 A caminho' : '📍 Chegada'} — {new Date(m.dataHora).toLocaleTimeString('pt-BR')}
+                      <Icone nome={m.tipo === 'a_caminho' ? 'carro' : 'pino'} /> {m.tipo === 'a_caminho' ? 'A caminho' : 'Chegada'} — {new Date(m.dataHora).toLocaleTimeString('pt-BR')}
                     </li>
                   ))}
                 </ul>

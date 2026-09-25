@@ -55,13 +55,14 @@ export default function Pedagios() {
         {pedagiosOrdenados.length === 0 ? (
           <p className="p-4 text-sm text-slate-500">Nenhuma praça cadastrada ainda.</p>
         ) : (
-          <table className="w-full text-left text-sm">
+          <div className="overflow-x-auto">
+<table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
               <tr>
-                <th className="px-4 py-2 font-medium">Praça</th>
-                <th className="px-4 py-2 font-medium">Valor (ida)</th>
-                <th className="px-4 py-2 font-medium">Reembolso (ida + volta)</th>
-                <th className="px-4 py-2 font-medium">Vigente desde</th>
+                <th scope="col" className="px-4 py-2 font-medium">Praça</th>
+                <th scope="col" className="px-4 py-2 font-medium">Valor (ida)</th>
+                <th scope="col" className="px-4 py-2 font-medium">Reembolso (ida + volta)</th>
+                <th scope="col" className="px-4 py-2 font-medium">Vigente desde</th>
               </tr>
             </thead>
             <tbody>
@@ -75,6 +76,7 @@ export default function Pedagios() {
               ))}
             </tbody>
           </table>
+</div>
         )}
       </div>
 
@@ -116,7 +118,7 @@ export default function Pedagios() {
           </label>
         </div>
 
-        {erro && <p className="mt-3 text-sm text-red-600">{erro}</p>}
+        {erro && <p role="alert" className="mt-3 text-sm text-red-600">{erro}</p>}
 
         <button
           type="submit"

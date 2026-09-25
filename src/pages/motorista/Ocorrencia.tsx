@@ -1,11 +1,14 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import Ajuda from '../../components/Ajuda'
+import ConfirmarAcao from '../../components/ConfirmarAcao'
+import Icone from '../../components/Icone'
 import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
 
 export default function Ocorrencia() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { entregas, registrarOcorrencia } = useStore()
+  const { entregas, registrarOcorrencia, offline } = useStore()
   const configuracao = useConfiguracaoTenant()
   const entrega = entregas.find((e) => e.id === id)
   const trajeto = entrega ? trajetoAtivo(entrega) : undefined
@@ -15,6 +18,7 @@ export default function Ocorrencia() {
   const [observacao, setObservacao] = useState('')
   const [justificativaDivergencia, setJustificativaDivergencia] = useState('')
   const [erro, setErro] = useState<string | null>(null)
+  const [confirmando, setConfirmando] = useState(false)
 
   if (!entrega) {
     return (
@@ -55,13 +59,24 @@ export default function Ocorrencia() {
       return
     }
     setErro(null)
+    setConfirmando(true)
+  }
+
+  function confirmarEnvio() {
+    setConfirmando(false)
     registrarOcorrencia(
       entrega!.id,
       motivo,
       observacao.trim() || undefined,
       divergencia?.divergiu ? justificativaDivergencia.trim() : undefined,
     )
-    navigate(`/motorista/entregas/${entrega!.id}`)
+    navigate(`/motorista/entregas/${entrega!.id}`, {
+      state: {
+        aviso: offline
+          ? 'Ocorrência salva neste dispositivo. Ela será sincronizada quando houver conexão.'
+          : 'Ocorrência registrada. O BDO foi reaberto para uma nova tentativa.',
+      },
+    })
   }
 
   return (
@@ -74,6 +89,9 @@ export default function Ocorrencia() {
         Use quando a entrega não pôde ser concluída. O BDO é reaberto automaticamente para nova tentativa — o
         histórico de tentativas anteriores fica preservado.
       </p>
+      <Ajuda>
+        <p>Escolha o motivo da não entrega e, se quiser, descreva o que aconteceu. A entrega volta para a sua lista para uma nova tentativa.</p>
+      </Ajuda>
 
       {entrega.ocorrencias.length > 0 && (
         <div className="mt-4">
@@ -98,8 +116,12 @@ export default function Ocorrencia() {
       ) : (
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-slate-700">Motivo</span>
+            <span className="font-medium text-slate-700">
+              Motivo <span aria-hidden="true" className="text-red-700">*</span>
+            </span>
             <select
+              aria-required="true"
+              aria-invalid={!!erro && !motivo}
               value={motivo}
               onChange={(e) => setMotivo(e.target.value)}
               className="min-h-11 rounded-lg border border-slate-300 px-3 py-2 text-sm"
@@ -127,7 +149,7 @@ export default function Ocorrencia() {
           {divergencia?.divergiu && (
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium text-amber-800">
-                ⚠️ Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
+                  <Icone nome="alerta" /> Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
                 km) — justifique antes de encerrar esta tentativa
               </span>
               <textarea
@@ -140,7 +162,11 @@ export default function Ocorrencia() {
             </label>
           )}
 
-          {erro && <p className="text-xs font-medium text-red-600">{erro}</p>}
+          {erro && (
+            <p role="alert" className="text-sm font-medium text-red-700">
+              {erro}
+            </p>
+          )}
 
           <button
             type="submit"
@@ -150,6 +176,16 @@ export default function Ocorrencia() {
           </button>
         </form>
       )}
+
+      <ConfirmarAcao
+        aberto={confirmando}
+        titulo="Registrar ocorrência?"
+        descricao="A entrega será marcada como não realizada e o BDO será reaberto para nova tentativa. O histórico é preservado."
+        rotuloConfirmar="Registrar ocorrência"
+        perigo
+        aoConfirmar={confirmarEnvio}
+        aoCancelar={() => setConfirmando(false)}
+      />
     </div>
   )
 }

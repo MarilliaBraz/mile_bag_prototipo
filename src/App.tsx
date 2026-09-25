@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { StoreProvider } from './data/store'
 import { AuthProvider } from './data/auth'
 import RequireAuth from './components/RequireAuth'
+import AcessibilidadeDeRota from './components/AcessibilidadeDeRota'
 
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -38,6 +39,7 @@ export default function App() {
     <StoreProvider>
       <AuthProvider>
         <HashRouter>
+          <AcessibilidadeDeRota />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login/:perfil" element={<Login />} />

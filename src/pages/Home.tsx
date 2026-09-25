@@ -1,3 +1,4 @@
+import Icone from '../components/Icone'
 import { Link } from 'react-router-dom'
 import { PERFIS_LISTA } from '../data/perfis'
 
@@ -20,7 +21,7 @@ export default function Home() {
               to={`/login/${perfil.id}`}
               className="flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
-              <span className="text-3xl">{perfil.emoji}</span>
+              <Icone nome={perfil.icone} className="!h-9 !w-9 text-blue-700" />
               <h2 className="mt-4 text-lg font-semibold text-slate-900">{perfil.titulo}</h2>
               <p className="mt-2 flex-1 text-sm text-slate-600">{perfil.descricao}</p>
               <span className="mt-4 text-sm font-semibold text-blue-700">Entrar como {perfil.subtitulo.toLowerCase()} →</span>

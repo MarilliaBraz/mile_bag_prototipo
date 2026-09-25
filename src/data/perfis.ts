@@ -1,3 +1,4 @@
+import type { NomeIcone } from '../components/Icone'
 export type Perfil = 'motorista' | 'tenant' | 'plataforma'
 
 export interface PerfilInfo {
@@ -7,7 +8,7 @@ export interface PerfilInfo {
   descricao: string
   descricaoLogin: string
   home: string
-  emoji: string
+  icone: NomeIcone
 }
 
 export const PERFIS: Record<Perfil, PerfilInfo> = {
@@ -19,7 +20,7 @@ export const PERFIS: Record<Perfil, PerfilInfo> = {
       'Captura do BDO, autoatribuição, rota, viagem, bagagem carona, comprovante de entrega, ocorrências, operação offline, conferência do relatório quinzenal, mensagens e ligação com o passageiro e marcos de progresso (HU01–HU08, HU17–HU21).',
     descricaoLogin: 'Capture BDOs, gerencie suas entregas e registre comprovantes direto do campo.',
     home: '/motorista',
-    emoji: '🚚',
+    icone: 'caminhao',
   },
   tenant: {
     id: 'tenant',
@@ -29,7 +30,7 @@ export const PERFIS: Record<Perfil, PerfilInfo> = {
       'Tarifas, praças de pedágio, parametrização, fechamento quinzenal e identidade visual dos relatórios (HU09–HU13).',
     descricaoLogin: 'Configure tarifas, pedágios e acompanhe o fechamento financeiro da sua empresa.',
     home: '/tenant',
-    emoji: '🏢',
+    icone: 'predio',
   },
   plataforma: {
     id: 'plataforma',
@@ -38,7 +39,7 @@ export const PERFIS: Record<Perfil, PerfilInfo> = {
     descricao: 'Cadastro de empresas assinantes, convite do primeiro administrador e planos de assinatura (HU14–HU16).',
     descricaoLogin: 'Gerencie as empresas assinantes e os planos de assinatura da plataforma.',
     home: '/plataforma',
-    emoji: '🛠️',
+    icone: 'ferramenta',
   },
 }
 

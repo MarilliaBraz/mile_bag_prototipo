@@ -34,3 +34,69 @@ body {
 [data-alto-contraste="true"] .bg-slate-100 {
   background-color: #ffffff;
 }
+
+/* Foco visível para navegação por teclado (WCAG 2.4.7): vale para links, botões e campos. */
+:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+[data-alto-contraste="true"] :focus-visible {
+  outline-color: #000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Ícones de traço (components/Icone.tsx): acompanham o tamanho do texto e a cor atual. */
+.icone {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+  flex: none;
+  overflow: visible;
+}
+
+/* Ao aparecer, o traço é "desenhado" (como nos ícones line animados). */
+.icone :is(path, line, polyline, polygon, rect, circle) {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: icone-tracar 0.7s ease-out forwards;
+}
+
+@keyframes icone-tracar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes icone-pulo {
+  40% {
+    transform: translateY(-2px) scale(1.12);
+  }
+}
+
+@keyframes icone-giro {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:is(button, a):not(:disabled):is(:hover, :focus-visible) .icone {
+  animation: icone-pulo 0.5s ease;
+}
+
+:is(button, a):not(:disabled):is(:hover, :focus-visible) .icone-sincronizar {
+  animation: icone-giro 0.7s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icone :is(path, line, polyline, polygon, rect, circle) {
+    stroke-dashoffset: 0;
+  }
+}

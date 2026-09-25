@@ -1,14 +1,15 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Icone, { type NomeIcone } from '../../components/Icone'
 import { useStore } from '../../data/store'
 import type { Mensagem } from '../../types'
 
-const EVENTO_ICONE: Record<NonNullable<Mensagem['tipoEvento']>, string> = {
-  VIAGEM_INICIADA: '🚚',
-  A_CAMINHO: '🚗',
-  CHEGADA: '📍',
-  COMPROVANTE_REGISTRADO: '✅',
-  OCORRENCIA_REGISTRADA: '⚠️',
+const EVENTO_ICONE: Record<NonNullable<Mensagem['tipoEvento']>, NomeIcone> = {
+  VIAGEM_INICIADA: 'caminhao',
+  A_CAMINHO: 'carro',
+  CHEGADA: 'pino',
+  COMPROVANTE_REGISTRADO: 'checkCirculo',
+  OCORRENCIA_REGISTRADA: 'alerta',
 }
 
 function Bolha({ mensagem }: { mensagem: Mensagem }) {
@@ -16,7 +17,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
     return (
       <div className="my-2 flex justify-center">
         <span className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-          {mensagem.tipoEvento && EVENTO_ICONE[mensagem.tipoEvento]} {mensagem.conteudo}
+          {mensagem.tipoEvento && <Icone nome={EVENTO_ICONE[mensagem.tipoEvento]} />} {mensagem.conteudo}
           <span className="text-slate-500">· {mensagem.canal === 'TELEGRAM' ? 'Telegram' : 'E-mail'}</span>
         </span>
       </div>
@@ -32,7 +33,7 @@ function Bolha({ mensagem }: { mensagem: Mensagem }) {
         }`}
       >
         <p>{mensagem.conteudo}</p>
-        <p className={`mt-1 text-[10px] ${doMotorista ? 'text-blue-200' : 'text-slate-500'}`}>
+        <p className={`mt-1 text-xs ${doMotorista ? 'text-blue-200' : 'text-slate-500'}`}>
           {mensagem.canal === 'TELEGRAM' ? 'Telegram' : 'E-mail'} · {new Date(mensagem.criadoEm).toLocaleTimeString('pt-BR')}
           {mensagem.statusEnvio === 'FALHOU' && ' · falha no envio'}
         </p>
@@ -82,8 +83,17 @@ export default function Conversa() {
         <div>
           <h1 className="text-lg font-bold text-slate-900">{entrega.bdo.passageiroNome}</h1>
           <p className="text-xs text-slate-500">
-            {temEmail && '✉️ E-mail'} {temEmail && ' · '}
-            {temTelegram ? '📨 Telegram' : temEmail ? '📨 Telegram (convite enviado, aguardando)' : null}
+            {temEmail && (
+              <>
+                <Icone nome="email" /> E-mail
+              </>
+            )}{' '}
+            {temEmail && ' · '}
+            {temTelegram || temEmail ? (
+              <>
+                <Icone nome="enviar" /> {temTelegram ? 'Telegram' : 'Telegram (convite enviado, aguardando)'}
+              </>
+            ) : null}
           </p>
         </div>
 
@@ -93,11 +103,11 @@ export default function Conversa() {
             href={`tel:${entrega.bdo.telefonePassageiro!.replace(/\D/g, '')}`}
             className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-emerald-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-800"
           >
-            📞 Ligar
+            <Icone nome="telefone" /> Ligar
           </a>
         ) : (
           <span className="inline-flex min-h-11 shrink-0 items-center rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-500">
-            📞 Sem telefone
+            <Icone nome="telefone" /> Sem telefone
           </span>
         )}
       </div>
