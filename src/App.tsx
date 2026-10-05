@@ -18,6 +18,7 @@ import Ocorrencia from './pages/motorista/Ocorrencia'
 import Sincronizacao from './pages/motorista/Sincronizacao'
 import Conversa from './pages/motorista/Conversa'
 import RelatorioQuinzenal from './pages/motorista/RelatorioQuinzenal'
+import Conta from './pages/motorista/Conta'
 
 import TenantLayout from './layouts/TenantLayout'
 import TenantDashboard from './pages/tenant/Dashboard'
@@ -67,6 +68,7 @@ export default function App() {
               <Route path="entregas/:id/conversa" element={<Conversa />} />
               <Route path="sincronizacao" element={<Sincronizacao />} />
               <Route path="relatorio" element={<RelatorioQuinzenal />} />
+              <Route path="conta" element={<Conta />} />
             </Route>
 
             {/* Back-office — administrador do tenant — HU09, HU10, HU11, HU12, HU13 */}

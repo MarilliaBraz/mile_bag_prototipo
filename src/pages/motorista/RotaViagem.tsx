@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { trajetoAtivo, useStore } from '../../data/store'
 import type { TrechoPedagio } from '../../types'
+import { numero } from '../../data/formatar'
 
 interface OpcaoRota {
   id: string
@@ -142,7 +143,7 @@ export default function RotaViagem() {
                 <div>
                   <dt className="text-slate-500">Distância</dt>
                   <dd>
-                    {opcao.kmIda} km ida / {opcao.kmVolta} km volta
+                    {numero(opcao.kmIda)} km ida / {numero(opcao.kmVolta)} km volta
                   </dd>
                 </div>
                 <div>

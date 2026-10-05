@@ -1,14 +1,95 @@
 @import "tailwindcss";
 
+/*
+ * Mesma linguagem visual do mile_bag_app: cantos mais arredondados, sombras
+ * suaves e movimento curto (só transform/opacity), sem "quique".
+ */
+@theme {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.125rem;
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06), 0 1px 3px rgb(15 23 42 / 0.08);
+  --ease-padrao: cubic-bezier(0.2, 0, 0, 1);
+}
+
 :root {
   color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  background: #f4f5f7;
-  color: #1f2430;
+  font-family: var(--font-sans);
+  background: #f3f5f9;
+  color: #1e293b;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * Área do motorista: usada no carro, a um braço de distância. As classes
+ * text-xs/text-sm do Tailwind leem estas variáveis, então dentro desta área
+ * todo o texto sobe um degrau sem reescrever cada tela (12px -> 14px, 14px -> 16px).
+ */
+.area-motorista {
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.3;
+}
+
+/* Alvos de toque do motorista: 48px no mínimo (o padrão do Tailwind min-h-11 é 44px). */
+.area-motorista :is(a, button, input, select, textarea).min-h-11 {
+  min-height: 3rem;
+}
+
+/* Resposta tátil: botões e cartões "afundam" de leve ao toque. */
+:is(button, a.botao-toque):not(:disabled) {
+  transition:
+    transform 120ms var(--ease-padrao),
+    background-color 120ms var(--ease-padrao),
+    border-color 120ms var(--ease-padrao),
+    box-shadow 120ms var(--ease-padrao);
+}
+
+:is(button, a.botao-toque):not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Entrada de tela: sobe e aparece rapidamente. */
+.entrar {
+  animation: entrar 200ms var(--ease-padrao) both;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Navegação inferior do motorista: "Capturar" em destaque no centro. */
+.nav-destaque-icone {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-top: -1.5rem;
+  border-radius: 999px;
+  border: 4px solid #fff;
+  background: #1d4ed8;
+  color: #fff;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 0.15);
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
 }
 
 #root {
@@ -46,7 +127,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }
@@ -87,16 +170,23 @@ body {
   }
 }
 
-:is(button, a):not(:disabled):is(:hover, :focus-visible) .icone {
-  animation: icone-pulo 0.5s ease;
-}
+@media (hover: hover) {
+  :is(button, a):not(:disabled):is(:hover, :focus-visible) .icone {
+    animation: icone-pulo 0.5s ease;
+  }
 
-:is(button, a):not(:disabled):is(:hover, :focus-visible) .icone-sincronizar {
-  animation: icone-giro 0.7s ease;
+  :is(button, a):not(:disabled):is(:hover, :focus-visible) .icone-sincronizar {
+    animation: icone-giro 0.7s ease;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .icone :is(path, line, polyline, polygon, rect, circle) {
     stroke-dashoffset: 0;
   }
+}
+
+[data-alto-contraste="true"] .nav-destaque-icone {
+  background: #0000b8;
+  box-shadow: none;
 }

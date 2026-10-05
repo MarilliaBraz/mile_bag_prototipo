@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import Icone from '../../components/Icone'
 import { trajetoAtivo, ultimoTrajetoEncerrado, useStore } from '../../data/store'
 import { entregaStatusInfo } from '../../data/statusLabels'
+import { numero } from '../../data/formatar'
 
 export default function EntregaDetalhe() {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const { entregas, autoatribuirEntrega, registrarCheckpoint } = useStore()
   const entrega = entregas.find((e) => e.id === id)
   const localizacao = useLocation()
@@ -31,8 +31,8 @@ export default function EntregaDetalhe() {
 
   return (
     <div>
-      <Link to="/motorista" className="text-xs font-semibold text-blue-700">
-        ← Painel de entregas
+      <Link to="/motorista" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-blue-700">
+        <Icone nome="voltar" /> Minhas entregas
       </Link>
 
       {aviso && (
@@ -44,56 +44,26 @@ export default function EntregaDetalhe() {
         </div>
       )}
 
-      <div className="mt-2 flex items-start justify-between gap-2">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900">BDO {entrega.bdo.numero}</h1>
-          <p className="text-sm text-slate-600">{entrega.bdo.passageiroNome}</p>
+      {/* Destino em destaque e contato à mão: é o que o motorista mais consulta no carro. */}
+      <section aria-label="Destino" className="mt-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-1">
+          <h1 className="text-xs font-bold tracking-wide text-slate-900 tabular-nums">BDO {entrega.bdo.numero}</h1>
+          <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold ${status.className}`}>{status.label}</span>
         </div>
-        <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>{status.label}</span>
-      </div>
-
-      <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 text-sm">
-        <dl className="grid grid-cols-3 gap-y-2">
-          <dt className="col-span-1 text-slate-500">Endereço</dt>
-          <dd className="col-span-2 text-slate-800">{entrega.bdo.enderecoEntrega}</dd>
-          <dt className="col-span-1 text-slate-500">Companhia aérea</dt>
-          <dd className="col-span-2 text-slate-800">{entrega.bdo.companhiaAerea}</dd>
-          {entrega.bdo.etiquetaBagagem && (
-            <>
-              <dt className="col-span-1 text-slate-500">Etiqueta</dt>
-              <dd className="col-span-2 text-slate-800">{entrega.bdo.etiquetaBagagem}</dd>
-            </>
-          )}
-          <dt className="col-span-1 text-slate-500">Origem do BDO</dt>
-          <dd className="col-span-2 text-slate-800">
-            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? (
-              <>
-                <Icone nome="email" /> Recebido por e-mail
-              </>
-            ) : (
-              <>
-                <Icone nome="camera" /> Fotografado
-              </>
-            )}
-          </dd>
-          {entrega.motoristaNome && (
-            <>
-              <dt className="col-span-1 text-slate-500">Motorista</dt>
-              <dd className="col-span-2 text-slate-800">{entrega.motoristaNome}</dd>
-            </>
-          )}
-        </dl>
-      </div>
+        <p className="mt-2 text-xs text-slate-600">Entregar para</p>
+        <p className="text-xl font-bold text-slate-900">{entrega.bdo.passageiroNome}</p>
+        <p className="mt-2 flex items-start gap-2 text-base text-slate-800">
+          <Icone nome="pino" className="mt-1 text-slate-500" />
+          <span>{entrega.bdo.enderecoEntrega}</span>
+        </p>
+      </section>
 
       {/* HU18/HU21 — conversa e ligação ficam no mesmo lugar (RI15) */}
       <Link
         to={`/motorista/entregas/${entrega.id}/conversa`}
-        className="mt-3 flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-sm hover:border-blue-300"
+        className="botao-toque mt-3 flex min-h-11 items-center justify-center gap-2 rounded-lg border-2 border-blue-700 bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-50"
       >
-        <span className="font-semibold text-slate-800">
-          <Icone nome="conversa" /> Conversa e ligação com o passageiro
-        </span>
-        <span className="text-xs font-semibold text-blue-700">Abrir →</span>
+        <Icone nome="telefone" /> Ligar ou conversar com o passageiro
       </Link>
 
       {/* Ações contextuais conforme o estado do ciclo de vida (RD05) */}
@@ -111,45 +81,14 @@ export default function EntregaDetalhe() {
         {(entrega.status === 'ATRIBUIDA' || entrega.status === 'REABERTA') && (
           <Link
             to={`/motorista/entregas/${entrega.id}/rota`}
-            className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
+            className="botao-toque inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-800"
           >
-            {entrega.status === 'REABERTA' ? 'Tentar entrega novamente: calcular rota' : 'Calcular rota e iniciar viagem'}
+            <Icone nome="rota" /> {entrega.status === 'REABERTA' ? 'Tentar de novo: calcular rota' : 'Calcular rota e iniciar viagem'}
           </Link>
         )}
 
         {entrega.status === 'EM_ANDAMENTO' && trajeto && ultimoCalculo && (
           <>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-800">Trajeto em execução</p>
-                <Link to={`/motorista/entregas/${entrega.id}/rota`} className="min-h-11 text-xs font-semibold text-blue-700 hover:underline">
-                  Recalcular rota
-                </Link>
-              </div>
-              <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
-                <dt>Km ida / volta (atual)</dt>
-                <dd>
-                  {ultimoCalculo.kmIda} km / {ultimoCalculo.kmVolta} km
-                </dd>
-                <dt>Tempo estimado</dt>
-                <dd>{ultimoCalculo.tempoEstimadoMin} min</dd>
-                <dt>Pedágios</dt>
-                <dd>{ultimoCalculo.pedagios.length === 0 ? 'Nenhum' : ultimoCalculo.pedagios.map((p) => p.praca).join(', ')}</dd>
-                {trajeto.calculosRota.length > 1 && (
-                  <>
-                    <dt>Cálculos de rota</dt>
-                    <dd>{trajeto.calculosRota.length} registrados (histórico preservado — RD04)</dd>
-                  </>
-                )}
-                {ultimoCalculo.origemSelecao === 'propria' && (
-                  <>
-                    <dt>Rota própria</dt>
-                    <dd>{ultimoCalculo.justificativaRotaPropria ?? 'Sem justificativa registrada'}</dd>
-                  </>
-                )}
-              </dl>
-            </div>
-
             <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
               <p className="font-semibold text-slate-800">Marcos de progresso</p>
               <p className="mt-1 text-xs text-slate-500">
@@ -183,23 +122,54 @@ export default function EntregaDetalhe() {
             </div>
 
             <Link
-              to={`/motorista/entregas/${entrega.id}/bagagem-carona`}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              Vincular bagagem carona
-            </Link>
-            <Link
               to={`/motorista/entregas/${entrega.id}/comprovante`}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
+              className="botao-toque inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-800"
             >
-              Registrar comprovante de entrega
+              <Icone nome="checkCirculo" /> Registrar entrega
             </Link>
             <Link
               to={`/motorista/entregas/${entrega.id}/ocorrencia`}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-red-700 hover:bg-red-50"
+              className="botao-toque inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-red-700 hover:bg-red-50"
             >
-              Registrar ocorrência — entrega não concretizada
+              <Icone nome="alerta" /> Não consegui entregar
             </Link>
+            <Link
+              to={`/motorista/entregas/${entrega.id}/bagagem-carona`}
+              className="botao-toque inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              <Icone nome="mala" /> Levar outra bagagem junto
+            </Link>
+            <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-slate-800">Trajeto em execução</p>
+                <Link to={`/motorista/entregas/${entrega.id}/rota`} className="min-h-11 text-xs font-semibold text-blue-700 hover:underline">
+                  Recalcular rota
+                </Link>
+              </div>
+              <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
+                <dt>Km ida / volta (atual)</dt>
+                <dd>
+                  {numero(ultimoCalculo.kmIda)} km / {numero(ultimoCalculo.kmVolta)} km
+                </dd>
+                <dt>Tempo estimado</dt>
+                <dd>{ultimoCalculo.tempoEstimadoMin} min</dd>
+                <dt>Pedágios</dt>
+                <dd>{ultimoCalculo.pedagios.length === 0 ? 'Nenhum' : ultimoCalculo.pedagios.map((p) => p.praca).join(', ')}</dd>
+                {trajeto.calculosRota.length > 1 && (
+                  <>
+                    <dt>Cálculos de rota</dt>
+                    <dd>{trajeto.calculosRota.length} registrados (histórico preservado — RD04)</dd>
+                  </>
+                )}
+                {ultimoCalculo.origemSelecao === 'propria' && (
+                  <>
+                    <dt>Rota própria</dt>
+                    <dd>{ultimoCalculo.justificativaRotaPropria ?? 'Sem justificativa registrada'}</dd>
+                  </>
+                )}
+              </dl>
+            </div>
+
           </>
         )}
 
@@ -225,7 +195,7 @@ export default function EntregaDetalhe() {
             <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
               <dt>Km ida / volta final</dt>
               <dd>
-                {trajetoEncerrado.kmIdaFinal} km / {trajetoEncerrado.kmVoltaFinal} km
+                {numero(trajetoEncerrado.kmIdaFinal ?? 0)} km / {numero(trajetoEncerrado.kmVoltaFinal ?? 0)} km
               </dd>
               <dt>Tempo final</dt>
               <dd>{trajetoEncerrado.tempoFinalMin} min</dd>
@@ -244,6 +214,38 @@ export default function EntregaDetalhe() {
             </dl>
           </div>
         )}
+      </div>
+
+      <h2 className="mt-6 text-sm font-semibold text-slate-900">Dados do BDO</h2>
+      <div className="mt-2 rounded-xl border border-slate-200 bg-white p-4 text-sm shadow-sm">
+        <dl className="grid grid-cols-3 gap-y-2">
+          <dt className="col-span-1 text-slate-500">Companhia aérea</dt>
+          <dd className="col-span-2 text-slate-800">{entrega.bdo.companhiaAerea}</dd>
+          {entrega.bdo.etiquetaBagagem && (
+            <>
+              <dt className="col-span-1 text-slate-500">Etiqueta</dt>
+              <dd className="col-span-2 text-slate-800">{entrega.bdo.etiquetaBagagem}</dd>
+            </>
+          )}
+          <dt className="col-span-1 text-slate-500">Origem do BDO</dt>
+          <dd className="col-span-2 text-slate-800">
+            {entrega.bdo.origem === 'EMAIL_AUTOMATICO' ? (
+              <>
+                <Icone nome="email" /> Recebido por e-mail
+              </>
+            ) : (
+              <>
+                <Icone nome="camera" /> Fotografado
+              </>
+            )}
+          </dd>
+          {entrega.motoristaNome && (
+            <>
+              <dt className="col-span-1 text-slate-500">Motorista</dt>
+              <dd className="col-span-2 text-slate-800">{entrega.motoristaNome}</dd>
+            </>
+          )}
+        </dl>
       </div>
 
       {entrega.bagagensCarona.length > 0 && (
@@ -274,13 +276,6 @@ export default function EntregaDetalhe() {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => navigate('/motorista')}
-        className="mt-6 min-h-11 text-xs font-medium text-slate-500 hover:text-slate-700"
-      >
-        Voltar para o painel de entregas
-      </button>
     </div>
   )
 }
