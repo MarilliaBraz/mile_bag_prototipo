@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useStore } from '../../data/store'
 import type { EscopoTarifa } from '../../types'
+import { moeda } from '../../data/formatar'
 
 const escopoLabel: Record<EscopoTarifa, string> = {
   TENANT: 'Padrão do tenant',
@@ -80,8 +81,8 @@ export default function Tarifas() {
                 <tr key={tarifa.id} className="border-b border-slate-100 last:border-0">
                   <td className="px-4 py-2 font-medium text-slate-800">{escopoLabel[tarifa.escopo]}</td>
                   <td className="px-4 py-2 text-slate-600">{tarifa.referencia ?? '—'}</td>
-                  <td className="px-4 py-2 text-slate-600">R$ {tarifa.valorFixo.toFixed(2)}</td>
-                  <td className="px-4 py-2 text-slate-600">R$ {tarifa.valorPorKm.toFixed(2)}</td>
+                  <td className="px-4 py-2 text-slate-600">{moeda(tarifa.valorFixo)}</td>
+                  <td className="px-4 py-2 text-slate-600">{moeda(tarifa.valorPorKm)}</td>
                 </tr>
               ))}
             </tbody>

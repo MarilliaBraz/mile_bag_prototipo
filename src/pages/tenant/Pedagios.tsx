@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useStore } from '../../data/store'
+import { moeda } from '../../data/formatar'
 
 export default function Pedagios() {
   const { pedagios, cadastrarPedagio } = useStore()
@@ -69,8 +70,8 @@ export default function Pedagios() {
               {pedagiosOrdenados.map((pedagio) => (
                 <tr key={pedagio.id} className="border-b border-slate-100 last:border-0">
                   <td className="px-4 py-2 font-medium text-slate-800">{pedagio.nome}</td>
-                  <td className="px-4 py-2 text-slate-600">R$ {pedagio.valor.toFixed(2)}</td>
-                  <td className="px-4 py-2 text-slate-600">R$ {(pedagio.valor * 2).toFixed(2)}</td>
+                  <td className="px-4 py-2 text-slate-600">{moeda(pedagio.valor)}</td>
+                  <td className="px-4 py-2 text-slate-600">{moeda(pedagio.valor * 2)}</td>
                   <td className="px-4 py-2 text-slate-600">{formatarData(pedagio.vigenteDesde)}</td>
                 </tr>
               ))}

@@ -25,10 +25,10 @@ function gravar(chave: string, valor: string) {
 
 /**
  * Tamanho do texto e alto contraste para baixa visão, lembrados neste navegador.
- * Aplica só enquanto a barra está montada e desfaz ao sair, para não vazar
- * para outras áreas do protótipo.
+ * Aplica enquanto o layout que chama o hook está montado e desfaz ao sair,
+ * para não vazar para outras áreas do protótipo.
  */
-function useAcessibilidade() {
+export function useAcessibilidade() {
   const [fontScale, setFontScale] = useState(() => {
     const salvo = Number(ler(FONT_SCALE_KEY))
     return salvo >= FONT_SCALE_MIN && salvo <= FONT_SCALE_MAX ? salvo : 100
@@ -60,8 +60,11 @@ function useAcessibilidade() {
   }
 }
 
-export default function BarraAcessibilidade({ className = '' }: { className?: string }) {
-  const { fontScale, diminuirFonte, aumentarFonte, altoContraste, alternarAltoContraste } = useAcessibilidade()
+export type EstadoAcessibilidade = ReturnType<typeof useAcessibilidade>
+
+/** Controles de fonte e contraste; o estado vem do layout (useAcessibilidade), que fica montado na área toda. */
+export default function BarraAcessibilidade({ estado, className = '' }: { estado: EstadoAcessibilidade; className?: string }) {
+  const { fontScale, diminuirFonte, aumentarFonte, altoContraste, alternarAltoContraste } = estado
 
   return (
     <div className={`print:hidden ${className}`}>

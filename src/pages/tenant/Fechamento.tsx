@@ -2,6 +2,7 @@ import ConfirmarAcao from '../../components/ConfirmarAcao'
 import Icone from '../../components/Icone'
 import { useState } from 'react'
 import { useStore } from '../../data/store'
+import { moeda } from '../../data/formatar'
 
 export default function Fechamento() {
   const { fechamentos, gerarFechamento } = useStore()
@@ -67,11 +68,11 @@ export default function Fechamento() {
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg bg-slate-50 p-3">
                 <p className="text-xs text-slate-500">Relatório de pagamento de entregas</p>
-                <p className="mt-1 text-lg font-bold text-slate-900">R$ {fechamento.totalPagamentoEntregas.toFixed(2)}</p>
+                <p className="mt-1 text-lg font-bold text-slate-900">{moeda(fechamento.totalPagamentoEntregas)}</p>
               </div>
               <div className="rounded-lg bg-slate-50 p-3">
                 <p className="text-xs text-slate-500">Relatório de reembolso de pedágios</p>
-                <p className="mt-1 text-lg font-bold text-slate-900">R$ {fechamento.totalReembolsoPedagios.toFixed(2)}</p>
+                <p className="mt-1 text-lg font-bold text-slate-900">{moeda(fechamento.totalReembolsoPedagios)}</p>
               </div>
               <div className="rounded-lg bg-slate-50 p-3">
                 <p className="text-xs text-slate-500">Entregas incluídas</p>

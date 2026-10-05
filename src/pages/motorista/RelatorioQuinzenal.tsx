@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MOTORISTA_ATUAL, ultimoTrajetoEncerrado, useStore, useEntregasDoTenant, valorVigente } from '../../data/store'
 import type { CampoAjuste, Entrega, Trajeto } from '../../types'
+import { numero } from '../../data/formatar'
 
 const CAMPO_LABEL: Record<CampoAjuste, string> = {
   KM_IDA: 'Km ida',
@@ -51,7 +52,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
           {CAMPO_LABEL[campo]} {temAjuste && <span className="ml-1 text-xs font-semibold text-amber-700">AJUSTADO</span>}
         </span>
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-800">{valorAtual.toFixed(2)}</span>
+          <span className="font-semibold text-slate-800">{numero(valorAtual, 2)}</span>
           {!editando && (
             <button
               type="button"
@@ -71,7 +72,7 @@ function LinhaAjustavel({ trajeto, campo, tarifaBase, onSalvar }: LinhaAjustavel
             onChange={(e) => setValorNovo(e.target.value)}
             type="number"
             step="0.01"
-            placeholder={`Novo valor (atual: ${valorAtual.toFixed(2)})`}
+            placeholder={`Novo valor (atual: ${numero(valorAtual, 2)})`}
             className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs"
           />
           <textarea

@@ -18,7 +18,10 @@ export default function Sincronizacao() {
 
   return (
     <div>
-      <h1 className="text-lg font-bold text-slate-900">Sincronização</h1>
+      <Link to="/motorista/conta" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-blue-700">
+        <Icone nome="voltar" /> Conta
+      </Link>
+      <h1 className="text-lg font-bold text-slate-900">Registros do aparelho</h1>
       <p className="mt-1 text-sm text-slate-600">
         Enquanto o motorista está sem conexão, todas as ações continuam funcionando e ficam guardadas neste
         dispositivo. Assim que a conexão volta, tudo é enviado automaticamente, na mesma ordem em que foi criado —

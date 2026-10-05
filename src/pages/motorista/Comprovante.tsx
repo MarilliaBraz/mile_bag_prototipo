@@ -4,6 +4,7 @@ import Ajuda from '../../components/Ajuda'
 import ConfirmarAcao from '../../components/ConfirmarAcao'
 import Icone from '../../components/Icone'
 import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
+import { numero } from '../../data/formatar'
 
 // Coordenadas de referência em Goiânia — usadas só para simular a captura de
 // geolocalização (o protótipo não tem acesso real ao GPS do dispositivo).
@@ -185,7 +186,7 @@ export default function Comprovante() {
         {divergencia?.divergiu && (
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium text-amber-800">
-              <Icone nome="alerta" /> Km final ({divergencia.totalFinal.toFixed(1)} km) diverge da rota sugerida ({divergencia.totalInicial.toFixed(1)}{' '}
+              <Icone nome="alerta" /> Km final ({numero(divergencia.totalFinal)} km) diverge da rota sugerida ({numero(divergencia.totalInicial)}{' '}
               km) — justifique antes de encerrar
             </span>
             <textarea
