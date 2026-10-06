@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Ajuda from '../components/Ajuda'
-import BarraAcessibilidade, { useAcessibilidade } from '../components/BarraAcessibilidade'
+import BarraAcessibilidade from '../components/BarraAcessibilidade'
+import { useAcessibilidade } from '../components/useAcessibilidade'
 import Icone, { type NomeIcone } from '../components/Icone'
 import { useAuth } from '../data/auth'
 
