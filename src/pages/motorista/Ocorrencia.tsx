@@ -40,7 +40,7 @@ export default function Ocorrencia() {
           ← BDO {entrega.bdo.numero}
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          Esta entrega já foi encerrada com comprovante de entrega — não é possível registrar uma ocorrência para ela.
+          Esta entrega já foi encerrada com comprovante de entrega. Não é possível registrar uma ocorrência para ela.
         </div>
       </div>
     )
@@ -52,11 +52,11 @@ export default function Ocorrencia() {
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!motivo) {
-      setErro('Selecione um motivo do catálogo do tenant.')
+      setErro('Selecione um dos motivos cadastrados pela empresa.')
       return
     }
     if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
-      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar.')
+      setErro('A quilometragem final diverge da rota sugerida no início. Informe uma justificativa antes de encerrar.')
       return
     }
     setErro(null)
@@ -87,7 +87,7 @@ export default function Ocorrencia() {
       </Link>
       <h1 className="mt-2 text-lg font-bold text-slate-900">Registrar ocorrência</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Use quando a entrega não pôde ser concluída. O BDO é reaberto automaticamente para nova tentativa — o
+        Use quando a entrega não pôde ser concluída. O BDO é reaberto automaticamente para nova tentativa, e o
         histórico de tentativas anteriores fica preservado.
       </p>
       <Ajuda>
@@ -151,7 +151,7 @@ export default function Ocorrencia() {
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium text-amber-800">
                   <Icone nome="alerta" /> Km final ({numero(divergencia.totalFinal)} km) diverge da rota sugerida ({numero(divergencia.totalInicial)}{' '}
-                km) — justifique antes de encerrar esta tentativa
+                km). Justifique antes de encerrar esta tentativa
               </span>
               <textarea
                 value={justificativaDivergencia}

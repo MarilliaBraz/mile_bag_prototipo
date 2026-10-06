@@ -24,8 +24,8 @@ export default function Sincronizacao() {
       <h1 className="text-lg font-bold text-slate-900">Registros do aparelho</h1>
       <p className="mt-1 text-sm text-slate-600">
         Enquanto o motorista está sem conexão, todas as ações continuam funcionando e ficam guardadas neste
-        dispositivo. Assim que a conexão volta, tudo é enviado automaticamente, na mesma ordem em que foi criado —
-        este botão só existe neste protótipo para simular esse momento de reconexão.
+        dispositivo. Assim que a conexão volta, tudo é enviado automaticamente, na mesma ordem em que foi criado.
+        Este botão só existe neste protótipo para simular esse momento de reconexão.
       </p>
 
       <div
@@ -35,8 +35,8 @@ export default function Sincronizacao() {
       >
         <Icone nome={offline ? 'semConexao' : 'conexao'} />{' '}
         {offline
-          ? 'Dispositivo simulado como offline. Novas ações continuam sendo salvas localmente, mas não podem ser sincronizadas agora.'
-          : 'Dispositivo simulado como online.'}
+          ? 'Aparelho simulado sem conexão. Novas ações continuam sendo salvas localmente, mas não podem ser sincronizadas agora.'
+          : 'Aparelho simulado como conectado.'}
       </div>
 
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
@@ -57,8 +57,8 @@ export default function Sincronizacao() {
 
         {offline && pendentes.length > 0 && (
           <p className="mt-2 text-xs text-amber-700">
-            A sincronização automática só acontece quando a conectividade for restabelecida — use o alternador
-            "Online/Sem conexão" no topo da tela para simular a reconexão.
+            A sincronização automática só acontece quando a conectividade voltar. Use o botão
+            "Conectado/Sem conexão" no topo da tela para simular a reconexão.
           </p>
         )}
 

@@ -25,7 +25,7 @@ export default function Fechamento() {
           <h1 className="text-xl font-bold text-slate-900">Fechamento periódico</h1>
           <p className="mt-1 text-sm text-slate-500">
             Pagamento de entregas e reembolso de pedágios, calculados a partir do trajeto final consolidado de cada
-            entrega — usando o ajuste mais recente do motorista quando existir — e das tarifas/pedágios vigentes,
+            entrega (usando o ajuste mais recente do motorista, quando existir) e das tarifas/pedágios vigentes,
             sempre como totais separados.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function Fechamento() {
           <div key={fechamento.id} className="rounded-xl border border-slate-200 bg-white p-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-slate-800">
-                Período {formatarData(fechamento.periodoInicio)} – {formatarData(fechamento.periodoFim)}
+                Período de {formatarData(fechamento.periodoInicio)} a {formatarData(fechamento.periodoFim)}
               </p>
               <span className="text-xs text-slate-500">Gerado em {new Date(fechamento.geradoEm).toLocaleString('pt-BR')}</span>
             </div>

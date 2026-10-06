@@ -4,7 +4,7 @@ import type { EscopoTarifa } from '../../types'
 import { moeda } from '../../data/formatar'
 
 const escopoLabel: Record<EscopoTarifa, string> = {
-  TENANT: 'Padrão do tenant',
+  TENANT: 'Padrão da empresa',
   MOTORISTA: 'Motorista específico',
   REGIAO: 'Região específica',
 }
@@ -32,7 +32,7 @@ export default function Tarifas() {
     const fixo = valorFixo.trim() === '' ? undefined : Number(valorFixo)
     const porKm = valorPorKm.trim() === '' ? undefined : Number(valorPorKm)
 
-    // FR-005 (HU09) — ao menos um dos dois componentes é obrigatório
+    // FR-005 (HU09); ao menos um dos dois componentes é obrigatório
     if (!fixo && !porKm) {
       setErro('Informe ao menos o valor fixo ou o valor por quilômetro.')
       return
@@ -80,7 +80,7 @@ export default function Tarifas() {
               {tarifasOrdenadas.map((tarifa) => (
                 <tr key={tarifa.id} className="border-b border-slate-100 last:border-0">
                   <td className="px-4 py-2 font-medium text-slate-800">{escopoLabel[tarifa.escopo]}</td>
-                  <td className="px-4 py-2 text-slate-600">{tarifa.referencia ?? '—'}</td>
+                  <td className="px-4 py-2 text-slate-600">{tarifa.referencia ?? 'Todos os motoristas'}</td>
                   <td className="px-4 py-2 text-slate-600">{moeda(tarifa.valorFixo)}</td>
                   <td className="px-4 py-2 text-slate-600">{moeda(tarifa.valorPorKm)}</td>
                 </tr>
@@ -102,7 +102,7 @@ export default function Tarifas() {
               onChange={(e) => setEscopo(e.target.value as EscopoTarifa)}
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
-              <option value="TENANT">Padrão do tenant</option>
+              <option value="TENANT">Padrão da empresa</option>
               <option value="MOTORISTA">Motorista específico</option>
               <option value="REGIAO">Região específica</option>
             </select>

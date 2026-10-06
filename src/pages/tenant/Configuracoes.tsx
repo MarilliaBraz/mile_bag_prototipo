@@ -89,9 +89,9 @@ export default function Configuracoes() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-slate-900">Configurações do tenant</h1>
+      <h1 className="text-xl font-bold text-slate-900">Configurações da empresa</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Parametrização exclusiva desta empresa — nenhum outro tenant vê ou edita estes valores. Cada alteração
+        Configuração exclusiva desta empresa: nenhuma outra empresa vê ou edita estes valores. Cada alteração
         é aplicada imediatamente.
       </p>
 
@@ -118,7 +118,7 @@ export default function Configuracoes() {
 
         <TagListEditor
           titulo="Bases aeroportuárias"
-          descricao="Aeroportos a partir dos quais este tenant opera."
+          descricao="Aeroportos a partir dos quais esta empresa opera."
           itens={configuracao.basesAeroportuarias}
           onChange={(itens) => {
             atualizarConfiguracao({ basesAeroportuarias: itens })
@@ -128,7 +128,7 @@ export default function Configuracoes() {
 
         <TagListEditor
           titulo="Companhias aéreas atendidas"
-          descricao="BDOs dessas companhias podem ser processados por este tenant."
+          descricao="BDOs dessas companhias podem ser atendidos por esta empresa."
           itens={configuracao.companhiasAtendidas}
           onChange={(itens) => {
             atualizarConfiguracao({ companhiasAtendidas: itens })
@@ -159,7 +159,7 @@ export default function Configuracoes() {
           <h2 className="text-sm font-semibold text-slate-800">Limiar de divergência do trajeto</h2>
           <p className="mt-0.5 text-xs text-slate-500">
             Quando a quilometragem final consolidada divergir da rota inicialmente sugerida em pelo menos um
-            desses dois valores — o que for maior —, o motorista precisa justificar antes de encerrar a entrega.
+            desses dois valores (o que for maior), o motorista precisa justificar antes de encerrar a entrega.
           </p>
           <div className="mt-3 flex flex-wrap gap-4">
             <label className="flex flex-col gap-1 text-xs font-medium text-slate-600">

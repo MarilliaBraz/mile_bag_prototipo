@@ -19,13 +19,13 @@ const AJUDA: Record<string, string> = {
   '/tenant/configuracoes': 'Ajuste as regras da sua empresa, como os motivos de ocorrência e o limite de divergência de quilometragem.',
 }
 
-/** Back-office do administrador do tenant (HU09–HU13), com a marca da própria empresa (HU13) no topo do menu. */
+/** Back-office do administrador do tenant (HU09 a HU13), com a marca da própria empresa (HU13) no topo do menu. */
 export default function TenantLayout() {
   const identidade = useIdentidadeVisualTenant()
 
   return (
     <AdminShell
-      area="Back-office da empresa"
+      area="Administração da empresa"
       navItems={navItems}
       ajuda={AJUDA}
       marca={

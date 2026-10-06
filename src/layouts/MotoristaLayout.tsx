@@ -43,9 +43,9 @@ export default function MotoristaLayout() {
             className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-xs font-semibold ${
               offline ? 'bg-amber-100 text-amber-900' : 'bg-emerald-50 text-emerald-800'
             }`}
-            title="Simulação: alterna entre online e sem conexão"
+            title="Simulação: alterna entre conectado e sem conexão"
           >
-            <Icone nome={offline ? 'semConexao' : 'conexao'} /> {offline ? 'Sem conexão' : 'Online'}
+            <Icone nome={offline ? 'semConexao' : 'conexao'} /> {offline ? 'Sem conexão' : 'Conectado'}
           </button>
         </div>
       </header>
