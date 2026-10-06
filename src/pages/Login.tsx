@@ -47,7 +47,7 @@ export default function Login() {
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Painel de marca — só em telas médias/grandes (desktop) */}
-      <aside className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-slate-900 px-12 py-12 text-white lg:flex">
+      <aside className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-[#0b1220] px-12 py-12 text-white lg:flex">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-3xl"

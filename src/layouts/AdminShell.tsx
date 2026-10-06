@@ -39,7 +39,7 @@ export default function AdminShell({
     }`
 
   return (
-    <div className="min-h-screen bg-[#f3f5f9] sm:grid sm:grid-cols-[16rem_minmax(0,1fr)]">
+    <div className="min-h-screen bg-[var(--fundo-app)] sm:grid sm:grid-cols-[16rem_minmax(0,1fr)]">
       <a
         href="#conteudo"
         className="absolute left-2 top-[-4rem] z-50 rounded-md border-2 border-blue-700 bg-white px-4 py-2 text-sm font-semibold text-blue-800 focus:top-2"
@@ -47,7 +47,7 @@ export default function AdminShell({
         Pular para o conteúdo
       </a>
 
-      <aside className="sticky top-0 z-20 flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white/90 px-4 py-2 backdrop-blur sm:h-screen sm:flex-col sm:flex-nowrap sm:items-stretch sm:gap-1 sm:border-r sm:border-b-0 sm:bg-white sm:px-3 sm:py-5 print:hidden">
+      <aside className="sticky top-0 z-20 flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white/90 px-4 py-2 backdrop-blur sm:h-screen sm:flex-col sm:flex-nowrap sm:items-stretch sm:gap-1 sm:border-r sm:border-b-0 sm:bg-[var(--superficie)] sm:px-3 sm:py-5 print:hidden">
         <div className="sm:px-2 sm:pb-4">
           {marca}
           <p className="mt-1 hidden text-xs text-slate-600 sm:block">{area}</p>

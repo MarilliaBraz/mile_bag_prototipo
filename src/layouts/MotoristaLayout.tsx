@@ -23,7 +23,7 @@ export default function MotoristaLayout() {
   const acessibilidade = useAcessibilidade()
 
   return (
-    <div className="area-motorista flex min-h-screen flex-col bg-[#f3f5f9]">
+    <div className="area-motorista flex min-h-screen flex-col bg-[var(--fundo-app)]">
       <a
         href="#conteudo"
         className="absolute left-2 top-[-4rem] z-50 rounded-md border-2 border-blue-700 bg-white px-4 py-2 text-sm font-semibold text-blue-800 focus:top-2"
@@ -72,7 +72,7 @@ export default function MotoristaLayout() {
 
       <nav
         aria-label="Menu do motorista"
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_16px_rgb(15_23_42/0.08)] print:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] shadow-[var(--sombra-nav)] print:hidden"
       >
         <div className="mx-auto grid h-[68px] max-w-md grid-cols-4">
           {navItems.map((item) => (
