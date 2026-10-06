@@ -10,7 +10,7 @@ import type {
   ConfiguracaoTenant,
 } from '../types'
 
-// Dados iniciais do protótipo — só para a demonstração navegável partir de um
+// Dados iniciais do protótipo; só para a demonstração navegável partir de um
 // estado realista (um tenant já operando, entregas em diferentes estágios do
 // ciclo de vida). Nada disso é persistido em servidor: ver src/data/store.tsx.
 
@@ -67,7 +67,7 @@ export const seedEntregas: Entrega[] = [
     criadaEm: '2026-09-09T07:50:00',
   },
   {
-    // RF21 — recebida automaticamente por e-mail, sem tela de conferência.
+    // RF21: recebida automaticamente por e-mail, sem tela de conferência.
     id: 'entrega-005',
     tenantId: TENANT_ID,
     bdo: {

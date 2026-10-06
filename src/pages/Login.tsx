@@ -32,7 +32,7 @@ export default function Login() {
     setEntrando(true)
 
     // Pequeno atraso simulado, só para o envio do formulário parecer uma
-    // chamada real de autenticação — não há back-end neste protótipo.
+    // chamada real de autenticação; não há back-end neste protótipo.
     window.setTimeout(() => {
       const autenticou = entrar(perfil.id, usuario, senha)
       if (autenticou) {
@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      {/* Painel de marca — só em telas médias/grandes (desktop) */}
+      {/* Painel de marca: só em telas médias e grandes (computador) */}
       <aside className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-[#0b1220] px-12 py-12 text-white lg:flex">
         <div
           aria-hidden="true"
@@ -91,7 +91,7 @@ export default function Login() {
         <p className="relative text-xs text-blue-200">Gestão de última milha da devolução de bagagens extraviadas.</p>
       </aside>
 
-      {/* Formulário — visível em qualquer tamanho de tela */}
+      {/* Formulário: visível em qualquer tamanho de tela */}
       <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-12 lg:w-1/2 lg:flex-none lg:px-16 xl:px-24">
         <div className="mx-auto w-full max-w-sm">
           <Link to="/" className="text-xs font-semibold uppercase tracking-wide text-blue-700 lg:hidden">
@@ -183,7 +183,7 @@ export default function Login() {
             </button>
 
             <p className="rounded-lg bg-slate-100 px-3.5 py-2.5 text-center text-xs text-slate-500">
-              Protótipo — use <span className="font-semibold text-slate-700">admin</span> /{' '}
+              Protótipo: use <span className="font-semibold text-slate-700">admin</span> /{' '}
               <span className="font-semibold text-slate-700">admin</span> para entrar.
             </p>
           </form>

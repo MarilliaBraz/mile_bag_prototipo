@@ -6,7 +6,7 @@ import Icone from '../../components/Icone'
 import { avaliarDivergencia, trajetoAtivo, useConfiguracaoTenant, useStore } from '../../data/store'
 import { numero } from '../../data/formatar'
 
-// Coordenadas de referência em Goiânia — usadas só para simular a captura de
+// Coordenadas de referência em Goiânia; usadas só para simular a captura de
 // geolocalização (o protótipo não tem acesso real ao GPS do dispositivo).
 const LAT_BASE = -16.6799
 const LNG_BASE = -49.255
@@ -47,7 +47,7 @@ export default function Comprovante() {
           ← BDO {entrega.bdo.numero}
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          Esta entrega já possui um comprovante de entrega registrado — não é possível registrar um novo.
+          Esta entrega já possui um comprovante de entrega registrado. Não é possível registrar um novo.
         </div>
       </div>
     )
@@ -81,11 +81,11 @@ export default function Comprovante() {
       return
     }
     if (!geolocalizacao) {
-      setErro('Capture a geolocalização antes de confirmar. Se o GPS falhar, tente novamente — o restante do comprovante fica retido até lá.')
+      setErro('Capture a geolocalização antes de confirmar. Se o GPS falhar, tente novamente: o restante do comprovante fica guardado até lá.')
       return
     }
     if (divergencia?.divergiu && !justificativaDivergencia.trim()) {
-      setErro('A quilometragem final diverge da rota inicialmente sugerida — informe uma justificativa antes de encerrar.')
+      setErro('A quilometragem final diverge da rota sugerida no início. Informe uma justificativa antes de encerrar.')
       return
     }
     setErro(null)
@@ -187,7 +187,7 @@ export default function Comprovante() {
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium text-amber-800">
               <Icone nome="alerta" /> Km final ({numero(divergencia.totalFinal)} km) diverge da rota sugerida ({numero(divergencia.totalInicial)}{' '}
-              km) — justifique antes de encerrar
+              km). Justifique antes de encerrar
             </span>
             <textarea
               value={justificativaDivergencia}

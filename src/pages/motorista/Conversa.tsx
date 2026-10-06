@@ -62,7 +62,7 @@ export default function Conversa() {
   const temTelefone = !!entrega.bdo.telefonePassageiro
   const temEmail = !!entrega.bdo.emailPassageiro
   const temTelegram = !!entrega.telegramVinculado
-  // FR-006: sem e-mail não há via de convite ao Telegram (RD02) — diferente
+  // FR-006: sem e-mail não há via de convite ao Telegram (RD02); diferente
   // da versão WhatsApp original, telefone não habilita mensageria nenhuma.
   const contatoDisponivel = temEmail
   const mensagens = [...entrega.mensagens].sort((a, b) => a.criadoEm.localeCompare(b.criadoEm))
@@ -97,7 +97,7 @@ export default function Conversa() {
           </p>
         </div>
 
-        {/* HU21 — ligação direta, no mesmo lugar da conversa (RI15) — usa o telefone, não depende da mensageria (HU18) */}
+        {/* HU21: ligação direta, no mesmo lugar da conversa (RI15); usa o telefone e não depende da mensageria (HU18) */}
         {temTelefone ? (
           <a
             href={`tel:${entrega.bdo.telefonePassageiro!.replace(/\D/g, '')}`}
@@ -114,7 +114,7 @@ export default function Conversa() {
 
       {!contatoDisponivel && (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          Esta entrega não tem e-mail do passageiro capturado no BDO — sem e-mail não há como convidar o passageiro ao Telegram, então não há conversa disponível.
+          Esta entrega não tem e-mail do passageiro capturado no BDO. Sem e-mail não há como convidar o passageiro para o Telegram, então a conversa não está disponível.
         </div>
       )}
 
@@ -122,7 +122,7 @@ export default function Conversa() {
         <>
           <div className="mt-3 flex-1 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
             {mensagens.length === 0 ? (
-              <p className="mt-8 text-center text-xs text-slate-500">Nenhuma mensagem ainda — envie a primeira abaixo.</p>
+              <p className="mt-8 text-center text-xs text-slate-500">Nenhuma mensagem ainda. Envie a primeira abaixo.</p>
             ) : (
               mensagens.map((m) => <Bolha key={m.id} mensagem={m} />)
             )}
@@ -132,7 +132,7 @@ export default function Conversa() {
             type="button"
             onClick={() => simularRespostaPassageiro(entrega.id)}
             className="mt-2 min-h-11 self-start text-xs font-medium text-slate-500 hover:text-slate-700"
-            title="No sistema real, chega por webhook do Telegram/e-mail — este botão só simula a resposta no protótipo."
+            title="No sistema real, a resposta chega sozinha pelo Telegram ou pelo e-mail. Este botão só simula isso no protótipo."
           >
             ↺ Simular {temTelegram ? 'resposta' : 'toque no convite + resposta'} do passageiro
           </button>

@@ -36,7 +36,7 @@ export default function AtivarConvite() {
           <div className="mt-4">
             <p className="text-sm font-semibold text-emerald-700">Conta de administrador criada.</p>
             <p className="mt-2 text-sm text-slate-600">
-              Você já pode acessar o back-office de <strong>{tenant?.nome}</strong>.
+              Você já pode acessar a administração de <strong>{tenant?.nome}</strong>.
             </p>
             <Link to="/tenant" className="mt-4 inline-block rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white">
               Entrar no back-office
@@ -48,7 +48,7 @@ export default function AtivarConvite() {
           <div className="mt-4">
             {convite.status === 'USADO' && <p className="text-sm text-red-700">Este convite já foi usado para ativar uma conta.</p>}
             {convite.status === 'INVALIDADO' && (
-              <p className="text-sm text-red-700">Este convite foi invalidado — um novo convite mais recente foi emitido para este tenant.</p>
+              <p className="text-sm text-red-700">Este convite foi invalidado: um convite mais recente foi emitido para esta empresa.</p>
             )}
             {(convite.status === 'EXPIRADO' || expirado) && convite.status !== 'USADO' && convite.status !== 'INVALIDADO' && (
               <p className="text-sm text-red-700">Este convite expirou. Solicite ao administrador da plataforma um novo reenvio.</p>

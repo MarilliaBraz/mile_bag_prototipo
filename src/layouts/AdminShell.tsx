@@ -10,7 +10,7 @@ export type ItemMenu = { to: string; label: string; icon: NomeIcone; end?: boole
 
 /**
  * Casca comum do back-office (tenant e plataforma): barra lateral clara com
- * ícones no computador, faixa rolável no celular — mesma organização do
+ * ícones no computador, faixa rolável no celular; mesma organização do
  * mile_bag_app.
  */
 export default function AdminShell({

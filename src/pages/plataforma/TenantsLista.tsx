@@ -9,7 +9,7 @@ export default function TenantsLista() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-slate-900">Empresas assinantes</h1>
-          <p className="mt-1 text-sm text-slate-500">Tenants cadastrados na plataforma.</p>
+          <p className="mt-1 text-sm text-slate-500">Empresas cadastradas na plataforma.</p>
         </div>
         <Link
           to="/plataforma/tenants/novo"

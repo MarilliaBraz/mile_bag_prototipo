@@ -26,7 +26,7 @@ export default function IdentidadeVisual() {
       <h1 className="text-xl font-bold text-slate-900">Identidade visual</h1>
       <p className="mt-1 text-sm text-slate-500">
         Configure o logotipo e o cabeçalho do seu tenant. Essa identidade é aplicada automaticamente aos relatórios
-        de fechamento gerados — não existe uma tela separada de "relatório" aqui, só a configuração.
+        de fechamento gerados. Não existe uma tela separada de "relatório" aqui, só a configuração.
       </p>
 
       <div className="mt-6 flex flex-col gap-6 sm:flex-row">
@@ -47,7 +47,7 @@ export default function IdentidadeVisual() {
 
           <div>
             <label htmlFor="logoIniciais" className="text-sm font-medium text-slate-700">
-              Iniciais do logotipo (2–3 letras)
+              Iniciais do logotipo (2 ou 3 letras)
             </label>
             <input
               id="logoIniciais"
@@ -94,9 +94,9 @@ export default function IdentidadeVisual() {
             className="flex h-16 w-16 items-center justify-center rounded-full text-lg font-bold text-white shadow"
             style={{ backgroundColor: corPrimaria }}
           >
-            {logoIniciais.slice(0, 3).toUpperCase() || '—'}
+            {logoIniciais.slice(0, 3).toUpperCase() || '?'}
           </span>
-          <p className="text-center text-sm font-semibold text-slate-800">{nomeExibicao || 'Nome do tenant'}</p>
+          <p className="text-center text-sm font-semibold text-slate-800">{nomeExibicao || 'Nome da empresa'}</p>
           <p className="text-center text-xs text-slate-500">
             Assim aparece no topo do back-office e no cabeçalho dos relatórios de fechamento.
           </p>

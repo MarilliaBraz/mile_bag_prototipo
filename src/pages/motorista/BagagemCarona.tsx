@@ -34,7 +34,7 @@ export default function BagagemCarona() {
           ← BDO {entrega.bdo.numero}
         </Link>
         <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          Esta entrega já foi encerrada com comprovante de entrega — não é mais possível vincular uma bagagem carona a
+          Esta entrega já foi encerrada com comprovante de entrega. Não é mais possível vincular uma bagagem carona a
           ela.
         </div>
       </div>
@@ -64,7 +64,7 @@ export default function BagagemCarona() {
       </Link>
       <h1 className="mt-2 text-lg font-bold text-slate-900">Vincular bagagem carona</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Capture o BDO da bagagem adicional e informe apenas a quilometragem complementar até o endereço dela — ela
+        Capture o BDO da bagagem adicional e informe apenas a quilometragem complementar até o endereço dela. Ela
         não é tratada como uma entrega separada.
       </p>
 
@@ -74,7 +74,7 @@ export default function BagagemCarona() {
           <ul className="mt-2 flex flex-col gap-2">
             {entrega.bagagensCarona.map((b) => (
               <li key={b.id} className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700">
-                BDO {b.bdo.numero} — {b.bdo.passageiroNome} (+{b.kmComplementar} km)
+                BDO {b.bdo.numero} · {b.bdo.passageiroNome} (+{b.kmComplementar} km)
               </li>
             ))}
           </ul>

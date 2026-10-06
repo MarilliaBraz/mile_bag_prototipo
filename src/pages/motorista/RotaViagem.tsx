@@ -19,11 +19,11 @@ function gerarOpcoesRota(entregaId: string, variacao = 0): OpcaoRota[] {
   let seed = variacao
   for (let i = 0; i < entregaId.length; i += 1) seed = (seed * 31 + entregaId.charCodeAt(i)) % 1000
 
-  const base = 6 + (seed % 12) // 6–17 km
+  const base = 6 + (seed % 12) // 6 a 17 km
   return [
     {
       id: 'sugerida-rapida',
-      titulo: 'Rota sugerida — mais rápida',
+      titulo: 'Rota sugerida: mais rápida',
       kmIda: Math.round(base * 10) / 10,
       kmVolta: Math.round(base * 10) / 10,
       tempoEstimadoMin: Math.round(base * 2.1),
@@ -31,7 +31,7 @@ function gerarOpcoesRota(entregaId: string, variacao = 0): OpcaoRota[] {
     },
     {
       id: 'sugerida-sem-pedagio',
-      titulo: 'Rota sugerida — evita pedágio',
+      titulo: 'Rota sugerida: sem pedágio',
       kmIda: Math.round((base + 2.4) * 10) / 10,
       kmVolta: Math.round((base + 2.4) * 10) / 10,
       tempoEstimadoMin: Math.round((base + 2.4) * 2.6),
@@ -39,7 +39,7 @@ function gerarOpcoesRota(entregaId: string, variacao = 0): OpcaoRota[] {
     },
     {
       id: 'sugerida-alternativa',
-      titulo: 'Rota sugerida — alternativa',
+      titulo: 'Rota sugerida: alternativa',
       kmIda: Math.round((base - 1.5 > 3 ? base - 1.5 : base + 4) * 10) / 10,
       kmVolta: Math.round((base - 1.5 > 3 ? base - 1.5 : base + 4) * 10) / 10,
       tempoEstimadoMin: Math.round(base * 1.8),
@@ -118,7 +118,7 @@ export default function RotaViagem() {
       <p className="mt-1 text-xs text-slate-500">Destino: {entrega.bdo.enderecoEntrega}</p>
       {modoRecalculo && (
         <p className="mt-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-800">
-          A viagem já está em execução — recalcular não trava nem apaga nada: o novo cálculo entra no histórico do
+          A viagem já está em andamento. Recalcular não trava nem apaga nada: o novo cálculo entra no histórico do
           trajeto, junto com os anteriores.
         </p>
       )}
@@ -171,7 +171,7 @@ export default function RotaViagem() {
         >
           <p className="font-semibold text-slate-800">Traçar rota própria</p>
           <p className="mt-1 text-xs text-slate-500">
-            Use quando nenhuma sugestão atende à situação real — exige justificativa.
+            Use quando nenhuma sugestão atende à situação real. Exige justificativa.
           </p>
         </button>
 

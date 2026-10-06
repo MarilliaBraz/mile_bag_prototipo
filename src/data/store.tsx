@@ -34,7 +34,7 @@ import {
   seedConfiguracao,
 } from './seed'
 
-// Store única do protótipo — simula, em memória + localStorage, o back-end do
+// Store única do protótipo; simula, em memória + localStorage, o back-end do
 // Milebag. Nada aqui é uma implementação real de persistência, isolamento por
 // tenant ou sincronização: é só o suficiente para as telas navegarem de forma
 // coerente. Ver mile_bag_documentacao/specs/HU*/data-model.md para o modelo real.
@@ -56,7 +56,7 @@ interface StoreState {
 }
 
 // v2: HU04 regenerada (Trajeto reconstruído) + HU17-HU21 + RF21 mudam o
-// formato de Entrega — incrementa a chave para não tentar reidratar estado
+// formato de Entrega; incrementa a chave para não tentar reidratar estado
 // antigo incompatível salvo por uma versão anterior do protótipo.
 const STORAGE_KEY = 'milebag-prototipo-store-v2'
 
@@ -65,7 +65,7 @@ function loadInitialState(): StoreState {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (raw) return JSON.parse(raw) as StoreState
   } catch {
-    // localStorage indisponível ou dado corrompido — cai para o seed
+    // localStorage indisponível ou dado corrompido; cai para o seed
   }
   return {
     tenants: seedTenants,
@@ -88,12 +88,12 @@ function gerarId(prefixo: string): string {
 
 // ---- Helpers de domínio compartilhados entre store e telas -----------------
 
-// HU19/EntregaDetalhe: trajeto ativo (no máximo um por entrega — FR-005/HU04).
+// HU19/EntregaDetalhe: trajeto ativo (no máximo um por entrega; FR-005/HU04).
 export function trajetoAtivo(entrega: Entrega): Trajeto | undefined {
   return entrega.trajetos.find((t) => t.status === 'em_execucao')
 }
 
-// Último trajeto encerrado — usado para exibir o consolidado (comprovante,
+// Último trajeto encerrado; usado para exibir o consolidado (comprovante,
 // ocorrência) e para o relatório quinzenal (HU17).
 export function ultimoTrajetoEncerrado(entrega: Entrega): Trajeto | undefined {
   const encerrados = entrega.trajetos.filter((t) => t.status === 'encerrado')
@@ -108,7 +108,7 @@ export function marcoMaisRecente(entrega: Entrega): CheckpointGps | undefined {
   return marcos[marcos.length - 1]
 }
 
-// HU17: valor vigente de um campo do trajeto — o ajuste mais recente, senão o
+// HU17: valor vigente de um campo do trajeto; o ajuste mais recente, senão o
 // valor final consolidado do trajeto.
 export function valorVigente(trajeto: Trajeto, campo: CampoAjuste, tarifaBase: number): number {
   const ajustesDoCampo = trajeto.ajustes.filter((a) => a.campo === campo)
@@ -142,14 +142,14 @@ const EVENTO_TEXTO: Record<TipoEventoMensagem, string> = {
   VIAGEM_INICIADA: 'O motorista iniciou o trajeto até você.',
   A_CAMINHO: 'O motorista está a caminho do endereço de entrega.',
   CHEGADA: 'O motorista chegou ao endereço de entrega.',
-  COMPROVANTE_REGISTRADO: 'Entrega concluída — comprovante registrado.',
+  COMPROVANTE_REGISTRADO: 'Entrega concluída: comprovante registrado.',
   OCORRENCIA_REGISTRADA: 'Não foi possível concluir a entrega nesta tentativa. Uma nova tentativa será agendada.',
 }
 
-// HU18 FR-005: dispara notificação automática nos canais disponíveis (RD02) —
+// HU18 FR-005: dispara notificação automática nos canais disponíveis (RD02);
 // simplesmente não dispara nada quando não há contato (FR-006 não se aplica
 // ao SISTEMA, só ao envio manual do motorista). Telegram só entra depois que
-// o passageiro já tocou no convite (telegramVinculado) — antes disso, e-mail
+// o passageiro já tocou no convite (telegramVinculado); antes disso, e-mail
 // é o único canal, mas carrega o convite (FR-003a).
 function gerarNotificacaoAutomatica(entrega: Entrega, tipoEvento: TipoEventoMensagem): Mensagem[] {
   const canais: CanalMensagem[] = []
@@ -194,48 +194,48 @@ function consolidarTrajeto(trajeto: Trajeto, tipoCheckpointFinal: TipoCheckpoint
 }
 
 interface StoreActions {
-  // HU14 — cadastrar empresa assinante
+  // HU14: cadastrar empresa assinante
   cadastrarTenant: (dados: { nome: string; emailAdministrador: string; planoId: string }) => Tenant
-  // HU15 — convite do primeiro administrador
+  // HU15: convite do primeiro administrador
   reenviarConvite: (tenantId: string) => ConviteAdministrador
   ativarConvite: (conviteId: string) => void
-  // HU16 — planos de assinatura
+  // HU16: planos de assinatura
   cadastrarPlano: (dados: Omit<PlanoAssinatura, 'id'>) => PlanoAssinatura
   trocarPlanoTenant: (tenantId: string, planoId: string) => void
-  // HU01 — capturar BDO (via de contingência, RF21)
+  // HU01: capturar BDO (via de contingência, RF21)
   criarEntregaComBdo: (bdo: Omit<Bdo, 'id' | 'origem' | 'dataCaptura'>) => Entrega
-  // RF21 — recebimento automático do BDO por e-mail (via principal)
+  // RF21: recebimento automático do BDO por e-mail (via principal)
   receberBdoPorEmail: (bdo: Omit<Bdo, 'id' | 'origem' | 'dataCaptura'>) => Entrega
-  // HU02 — autoatribuir entrega
+  // HU02: autoatribuir entrega
   autoatribuirEntrega: (entregaId: string) => void
-  // HU04 — iniciar trajeto e recalcular rota livremente
+  // HU04: iniciar trajeto e recalcular rota livremente
   iniciarViagem: (entregaId: string, calculo: Omit<CalculoRota, 'id' | 'dataHora' | 'ehRotaInicial'>) => void
   recalcularRota: (entregaId: string, calculo: Omit<CalculoRota, 'id' | 'dataHora' | 'ehRotaInicial'>) => void
-  // HU05 — vincular bagagem carona
+  // HU05: vincular bagagem carona
   vincularBagagemCarona: (entregaPrincipalId: string, bdo: Omit<Bdo, 'id' | 'origem' | 'dataCaptura'>, kmComplementar: number) => void
-  // HU06 — registrar comprovante de entrega
+  // HU06: registrar comprovante de entrega
   registrarComprovante: (entregaId: string, comprovante: Omit<ComprovanteEntrega, 'id' | 'entregaId'>, justificativaDivergencia?: string) => void
-  // HU07 — registrar ocorrência
+  // HU07: registrar ocorrência
   registrarOcorrencia: (entregaId: string, motivo: string, observacao?: string, justificativaDivergencia?: string) => void
-  // HU08 — offline / sincronização
+  // HU08: offline / sincronização
   setOffline: (offline: boolean) => void
   sincronizarPendentes: () => void
-  // HU09 — tarifas
+  // HU09: tarifas
   cadastrarTarifa: (dados: Omit<TabelaTarifa, 'id' | 'tenantId'>) => void
-  // HU10 — pedágios
+  // HU10: pedágios
   cadastrarPedagio: (dados: Omit<PracaPedagio, 'id' | 'tenantId'>) => void
-  // HU11 — configuração do tenant
+  // HU11: configuração do tenant
   atualizarConfiguracao: (dados: Partial<Omit<ConfiguracaoTenant, 'tenantId'>>) => void
-  // HU12 — fechamento quinzenal (considera ajustes de HU17)
+  // HU12: fechamento quinzenal (considera ajustes de HU17)
   gerarFechamento: () => Fechamento
-  // HU13 — identidade visual
+  // HU13: identidade visual
   atualizarIdentidadeVisual: (dados: Partial<Omit<IdentidadeVisualTenant, 'tenantId'>>) => void
-  // HU17 — conferir e corrigir relatório quinzenal
+  // HU17: conferir e corrigir relatório quinzenal
   registrarAjusteViagem: (trajetoId: string, campo: CampoAjuste, valorAnterior: number, valorNovo: number, justificativa: string) => void
-  // HU18 — trocar mensagens com o passageiro
+  // HU18: trocar mensagens com o passageiro
   enviarMensagem: (entregaId: string, conteudo: string) => void
   simularRespostaPassageiro: (entregaId: string) => void
-  // HU20 — registrar marcos de progresso ("a caminho" / "chegada")
+  // HU20: registrar marcos de progresso ("a caminho" / "chegada")
   registrarCheckpoint: (entregaId: string, tipo: 'a_caminho' | 'chegada') => void
 }
 
@@ -250,7 +250,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     } catch {
-      // sem espaço/sem localStorage — ignora, é só um protótipo
+      // sem espaço/sem localStorage; ignora, é só um protótipo
     }
   }, [state])
 
@@ -337,7 +337,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [criarEntregaBase, state.offline],
   )
 
-  // RF21 — simula o recebimento automático (sem etapa de conferência: FR-006)
+  // RF21: simula o recebimento automático (sem etapa de conferência: FR-006)
   const receberBdoPorEmail: StoreActions['receberBdoPorEmail'] = useCallback(
     (bdo) => {
       const entrega = criarEntregaBase(bdo, 'EMAIL_AUTOMATICO', state.offline)
@@ -387,7 +387,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // HU04 FR-003: recalcular a rota durante a execução, sem bloqueio — cada
+  // HU04 FR-003: recalcular a rota durante a execução, sem bloqueio; cada
   // recálculo é um novo CalculoRota, o histórico anterior nunca é apagado.
   const recalcularRota: StoreActions['recalcularRota'] = useCallback((entregaId, calculo) => {
     setState((s) => ({
@@ -406,7 +406,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // HU20 — marcos de progresso ("a caminho"/"chegada"), sem dedup e sem ordem
+  // HU20: marcos de progresso ("a caminho"/"chegada"), sem dedup e sem ordem
   // obrigatória (FR-004); dispara notificação automática (HU18) quando houver
   // contato disponível.
   const registrarCheckpoint: StoreActions['registrarCheckpoint'] = useCallback((entregaId, tipo) => {
@@ -566,7 +566,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // HU17 — FR-004: exige justificativa não vazia (garantido pela tela, mas
+  // HU17: FR-004: exige justificativa não vazia (garantido pela tela, mas
   // reforçado aqui); registro aditivo, nunca sobrescreve o Trajeto.
   const registrarAjusteViagem: StoreActions['registrarAjusteViagem'] = useCallback((trajetoId, campo, valorAnterior, valorNovo, justificativa) => {
     if (!justificativa.trim()) return
@@ -591,9 +591,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // HU18 FR-003: escolhe o canal automaticamente — e-mail sempre que
+  // HU18 FR-003: escolhe o canal automaticamente; e-mail sempre que
   // capturado, Telegram assim que o passageiro tiver iniciado a conversa
-  // (telegramVinculado). Sem e-mail, não há canal nenhum (FR-006/FR-007) —
+  // (telegramVinculado). Sem e-mail, não há canal nenhum (FR-006/FR-007);
   // diferente da versão WhatsApp original, telefone não é mais usado aqui.
   const enviarMensagem: StoreActions['enviarMensagem'] = useCallback((entregaId, conteudo) => {
     if (!conteudo.trim()) return
@@ -621,12 +621,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
-  // Não faz parte de nenhum FR — só simula, no protótipo, a chegada de uma
+  // Não faz parte de nenhum FR; só simula, no protótipo, a chegada de uma
   // resposta do passageiro (que no sistema real chegaria por webhook do
-  // Telegram/IMAP, sem o passageiro precisar de conta — RD14/FR-004). Se o
+  // Telegram/IMAP, sem o passageiro precisar de conta; RD14/FR-004). Se o
   // Telegram ainda não estava vinculado, este clique simula também o
   // passageiro tocando no link de convite pela primeira vez (/start,
-  // research.md item 3 de HU18) — por isso a resposta já sai por lá.
+  // research.md item 3 de HU18); por isso a resposta já sai por lá.
   const simularRespostaPassageiro: StoreActions['simularRespostaPassageiro'] = useCallback((entregaId) => {
     setState((s) => ({
       ...s,
@@ -721,7 +721,7 @@ export function useEntregasDoTenant() {
   return entregas.filter((e) => e.tenantId === TENANT_ATUAL_ID)
 }
 
-// HU19 — minhas entregas ainda pendentes (FR-001)
+// HU19: minhas entregas ainda pendentes (FR-001)
 export function useMinhasEntregasPendentes() {
   const entregas = useEntregasDoTenant()
   return entregas
@@ -729,7 +729,7 @@ export function useMinhasEntregasPendentes() {
     .sort((a, b) => a.criadaEm.localeCompare(b.criadaEm))
 }
 
-// HU19/RF21 — BDOs confirmados ainda sem motorista responsável (FR-007)
+// HU19/RF21: BDOs confirmados ainda sem motorista responsável (FR-007)
 export function useBdosDisponiveis() {
   const entregas = useEntregasDoTenant()
   return entregas
