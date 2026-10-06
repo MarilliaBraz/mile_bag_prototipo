@@ -1,5 +1,6 @@
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
-import BarraAcessibilidade, { type EstadoAcessibilidade } from '../../components/BarraAcessibilidade'
+import BarraAcessibilidade from '../../components/BarraAcessibilidade'
+import type { EstadoAcessibilidade } from '../../components/useAcessibilidade'
 import Icone from '../../components/Icone'
 import { useAuth } from '../../data/auth'
 import { MOTORISTA_ATUAL, useEntregasDoTenant } from '../../data/store'

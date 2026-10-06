@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useEntregasDoTenant, useStore } from '../data/store'
-import { useAcessibilidade } from '../components/BarraAcessibilidade'
+import { useAcessibilidade } from '../components/useAcessibilidade'
 import Icone, { type NomeIcone } from '../components/Icone'
 
 const navItems: { to: string; label: string; icon: NomeIcone; end: boolean; destaque?: boolean }[] = [

@@ -195,7 +195,8 @@ export default function EntregaDetalhe() {
             <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
               <dt>Km ida / volta final</dt>
               <dd>
-                {numero(trajetoEncerrado.kmIdaFinal ?? 0)} km / {numero(trajetoEncerrado.kmVoltaFinal ?? 0)} km
+                {trajetoEncerrado.kmIdaFinal === null ? 'Não informado' : `${numero(trajetoEncerrado.kmIdaFinal)} km`} /{' '}
+                {trajetoEncerrado.kmVoltaFinal === null ? 'Não informado' : `${numero(trajetoEncerrado.kmVoltaFinal)} km`}
               </dd>
               <dt>Tempo final</dt>
               <dd>{trajetoEncerrado.tempoFinalMin} min</dd>
