@@ -45,11 +45,11 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login/:perfil" element={<Login />} />
 
-            {/* Tela de ativação de convite — fora dos layouts autenticados,
+            {/* Tela de ativação de convite, fora dos layouts autenticados:
                 simula o link recebido por e-mail pelo primeiro administrador (HU15) */}
             <Route path="/ativar-convite/:conviteId" element={<AtivarConvite />} />
 
-            {/* Aplicação do motorista (PWA) — HU01 a HU08 */}
+            {/* Aplicação do motorista (PWA): HU01 a HU08 */}
             <Route
               path="/motorista"
               element={
@@ -71,7 +71,7 @@ export default function App() {
               <Route path="conta" element={<Conta />} />
             </Route>
 
-            {/* Back-office — administrador do tenant — HU09, HU10, HU11, HU12, HU13 */}
+            {/* Administração da empresa (administrador do tenant): HU09 a HU13 */}
             <Route
               path="/tenant"
               element={
@@ -88,7 +88,7 @@ export default function App() {
               <Route path="identidade-visual" element={<IdentidadeVisual />} />
             </Route>
 
-            {/* Back-office — administrador da plataforma — HU14, HU15, HU16 */}
+            {/* Administração da plataforma: HU14 a HU16 */}
             <Route
               path="/plataforma"
               element={

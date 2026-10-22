@@ -10,7 +10,7 @@ const AJUDA: Record<string, string> = {
   '/plataforma/planos': 'Um plano define o limite de motoristas ativos e de BDOs por mês. Cadastre um plano antes de cadastrar empresas.',
 }
 
-/** Administração da plataforma (HU14–HU16): visão de todas as empresas assinantes. */
+/** Administração da plataforma (HU14 a HU16): visão de todas as empresas assinantes. */
 export default function PlataformaLayout() {
   return (
     <AdminShell

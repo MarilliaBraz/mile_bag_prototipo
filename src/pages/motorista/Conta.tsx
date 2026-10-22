@@ -1,5 +1,6 @@
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
-import BarraAcessibilidade, { type EstadoAcessibilidade } from '../../components/BarraAcessibilidade'
+import BarraAcessibilidade from '../../components/BarraAcessibilidade'
+import type { EstadoAcessibilidade } from '../../components/useAcessibilidade'
 import Icone from '../../components/Icone'
 import { useAuth } from '../../data/auth'
 import { MOTORISTA_ATUAL, useEntregasDoTenant } from '../../data/store'
@@ -7,7 +8,7 @@ import { MOTORISTA_ATUAL, useEntregasDoTenant } from '../../data/store'
 /**
  * Conta do motorista: o que não é do dia a dia (registros do aparelho,
  * preferências de leitura e sair) fica aqui, longe de toques acidentais
- * durante as entregas — mesma organização do mile_bag_app.
+ * durante as entregas; mesma organização do mile_bag_app.
  */
 export default function Conta() {
   const acessibilidade = useOutletContext<EstadoAcessibilidade>()

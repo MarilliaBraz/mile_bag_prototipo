@@ -104,7 +104,7 @@ export default function CadastrarTenant() {
           >
             {planos.map((plano) => (
               <option key={plano.id} value={plano.id}>
-                {plano.nome} — até {plano.limiteMotoristasAtivos} motoristas, {plano.limiteVolumeMensalBdos} BDOs/mês
+                {plano.nome}: até {plano.limiteMotoristasAtivos} motoristas, {plano.limiteVolumeMensalBdos} BDOs/mês
               </option>
             ))}
           </select>
