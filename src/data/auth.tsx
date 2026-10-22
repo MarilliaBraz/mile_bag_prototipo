@@ -4,7 +4,7 @@ import type { Perfil } from './perfis'
 // Autenticação simulada do protótipo. Não há back-end: qualquer usuário
 // "admin" com senha "admin" é aceito para qualquer um dos 3 perfis. A sessão
 // fica em sessionStorage (não em localStorage) para expirar ao fechar a aba,
-// como convém a um token de sessão — ver RNF03 (autenticação por token).
+// como convém a um token de sessão; ver RNF03 (autenticação por token).
 
 export interface Sessao {
   perfil: Perfil
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (sessao) window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sessao))
       else window.sessionStorage.removeItem(STORAGE_KEY)
     } catch {
-      // sessionStorage indisponível — ignora, é só um protótipo
+      // sessionStorage indisponível; ignora, é só um protótipo
     }
   }, [sessao])
 

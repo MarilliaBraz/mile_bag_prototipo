@@ -17,7 +17,7 @@ export default function AcessibilidadeDeRota() {
       const principal = document.querySelector('main')
       if (principal && !principal.hasAttribute('tabindex')) principal.tabIndex = -1
       const titulo = document.querySelector('h1')?.textContent?.trim()
-      document.title = titulo && titulo !== NOME_SISTEMA ? `${titulo} — ${NOME_SISTEMA}` : NOME_SISTEMA
+      document.title = titulo && titulo !== NOME_SISTEMA ? `${titulo} | ${NOME_SISTEMA}` : NOME_SISTEMA
     }
 
     // As telas podem montar o <h1> depois (dados, fases): observa o DOM.

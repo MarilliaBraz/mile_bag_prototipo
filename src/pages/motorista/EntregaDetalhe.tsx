@@ -58,7 +58,7 @@ export default function EntregaDetalhe() {
         </p>
       </section>
 
-      {/* HU18/HU21 — conversa e ligação ficam no mesmo lugar (RI15) */}
+      {/* HU18/HU21: conversa e ligação ficam no mesmo lugar (RI15) */}
       <Link
         to={`/motorista/entregas/${entrega.id}/conversa`}
         className="botao-toque mt-3 flex min-h-11 items-center justify-center gap-2 rounded-lg border-2 border-blue-700 bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-50"
@@ -114,7 +114,7 @@ export default function EntregaDetalhe() {
                 <ul className="mt-3 flex flex-col gap-1 text-xs text-slate-500">
                   {marcos.map((m) => (
                     <li key={m.id}>
-                      <Icone nome={m.tipo === 'a_caminho' ? 'carro' : 'pino'} /> {m.tipo === 'a_caminho' ? 'A caminho' : 'Chegada'} — {new Date(m.dataHora).toLocaleTimeString('pt-BR')}
+                      <Icone nome={m.tipo === 'a_caminho' ? 'carro' : 'pino'} /> {m.tipo === 'a_caminho' ? 'A caminho' : 'Chegada'} · {new Date(m.dataHora).toLocaleTimeString('pt-BR')}
                     </li>
                   ))}
                 </ul>
@@ -158,7 +158,7 @@ export default function EntregaDetalhe() {
                 {trajeto.calculosRota.length > 1 && (
                   <>
                     <dt>Cálculos de rota</dt>
-                    <dd>{trajeto.calculosRota.length} registrados (histórico preservado — RD04)</dd>
+                    <dd>{trajeto.calculosRota.length} registrados (o histórico é preservado)</dd>
                   </>
                 )}
                 {ultimoCalculo.origemSelecao === 'propria' && (
@@ -175,7 +175,7 @@ export default function EntregaDetalhe() {
 
         {entrega.status === 'ENCERRADA_COM_SUCESSO' && entrega.comprovante && (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
-            <p className="font-semibold text-emerald-800">Comprovante de entrega (POD)</p>
+            <p className="font-semibold text-emerald-800">Comprovante de entrega</p>
             <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-emerald-900">
               <dt>Recebedor</dt>
               <dd>{entrega.comprovante.recebedorNome}</dd>
@@ -195,7 +195,8 @@ export default function EntregaDetalhe() {
             <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-slate-600">
               <dt>Km ida / volta final</dt>
               <dd>
-                {numero(trajetoEncerrado.kmIdaFinal ?? 0)} km / {numero(trajetoEncerrado.kmVoltaFinal ?? 0)} km
+                {trajetoEncerrado.kmIdaFinal === null ? 'Não informado' : `${numero(trajetoEncerrado.kmIdaFinal)} km`} /{' '}
+                {trajetoEncerrado.kmVoltaFinal === null ? 'Não informado' : `${numero(trajetoEncerrado.kmVoltaFinal)} km`}
               </dd>
               <dt>Tempo final</dt>
               <dd>{trajetoEncerrado.tempoFinalMin} min</dd>
@@ -208,7 +209,7 @@ export default function EntregaDetalhe() {
               {trajetoEncerrado.ajustes.length > 0 && (
                 <>
                   <dt>Ajustes</dt>
-                  <dd>{trajetoEncerrado.ajustes.length} registrado(s) — ver relatório quinzenal</dd>
+                  <dd>{trajetoEncerrado.ajustes.length} registrado(s). Veja o relatório quinzenal</dd>
                 </>
               )}
             </dl>
@@ -254,7 +255,7 @@ export default function EntregaDetalhe() {
           <ul className="mt-2 flex flex-col gap-2">
             {entrega.bagagensCarona.map((b) => (
               <li key={b.id} className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700">
-                BDO {b.bdo.numero} — {b.bdo.passageiroNome} (+{b.kmComplementar} km)
+                BDO {b.bdo.numero} · {b.bdo.passageiroNome} (+{b.kmComplementar} km)
               </li>
             ))}
           </ul>

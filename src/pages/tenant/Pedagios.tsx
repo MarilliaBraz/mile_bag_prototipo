@@ -24,7 +24,7 @@ export default function Pedagios() {
       return
     }
 
-    // FR-005 (HU10) — rejeita vigência anterior à do valor vigente mais recente da mesma praça
+    // FR-005 (HU10); rejeita vigência anterior à do valor vigente mais recente da mesma praça
     const valoresDaMesmaPraca = pedagios.filter((p) => p.nome.trim().toLowerCase() === nome.trim().toLowerCase())
     const vigenciaMaisRecente = valoresDaMesmaPraca.reduce<string | null>(
       (maisRecente, p) => (!maisRecente || p.vigenteDesde > maisRecente ? p.vigenteDesde : maisRecente),
@@ -48,7 +48,7 @@ export default function Pedagios() {
       <h1 className="text-xl font-bold text-slate-900">Praças de pedágio</h1>
       <p className="mt-1 text-sm text-slate-500">
         Cadastro por tenant, com histórico de valores por data de vigência. O reembolso de uma viagem é sempre o dobro
-        do valor vigente — ida e volta — e usa o valor congelado no trajeto consolidado da viagem, nunca um valor
+        do valor vigente (ida e volta) e usa o valor congelado no trajeto consolidado da viagem, nunca um valor
         atualizado depois.
       </p>
 

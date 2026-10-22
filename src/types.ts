@@ -1,4 +1,4 @@
-// Tipos do protótipo Milebag — espelham (de forma simplificada, sem persistência
+// Tipos do protótipo Milebag; espelham (de forma simplificada, sem persistência
 // real) as entidades documentadas em mile_bag_documentacao/specs/HU*/data-model.md
 
 export type EntregaStatus =
@@ -67,7 +67,7 @@ export interface TrechoPedagio {
   semValorCadastrado?: boolean
 }
 
-// HU04 (regenerado 2026-09-09): "rota congelada" vira Trajeto reconstruído —
+// HU04 (regenerado 2026-09-09): "rota congelada" vira Trajeto reconstruído;
 // sequência de CalculoRota + CheckpointGps, consolidada só no encerramento.
 export type OrigemSelecaoRota = 'sugerida' | 'propria'
 
@@ -94,7 +94,7 @@ export interface CheckpointGps {
   ausente: boolean
 }
 
-// HU17: correção pontual de um valor final consolidado do trajeto — registro
+// HU17: correção pontual de um valor final consolidado do trajeto; registro
 // aditivo, nunca sobrescreve o Trajeto nem ajustes anteriores.
 export type CampoAjuste = 'KM_IDA' | 'KM_VOLTA' | 'TARIFA_APLICADA' | 'VALOR_PEDAGIO'
 
@@ -143,9 +143,9 @@ export interface Ocorrencia {
   registradaEm: string
 }
 
-// HU18 — mensageria motorista-passageiro (Telegram + e-mail), registro aditivo.
+// HU18: mensageria motorista-passageiro (Telegram + e-mail), registro aditivo.
 // Telegram só fica disponível depois que o passageiro toca no link de convite
-// recebido por e-mail (ver Entrega.telegramVinculado) — trocado de WhatsApp
+// recebido por e-mail (ver Entrega.telegramVinculado); trocado de WhatsApp
 // em 2026-09-23 para manter RNF08 (orçamento zerado) sem custo por conversa.
 export type AutorMensagem = 'MOTORISTA' | 'PASSAGEIRO' | 'SISTEMA'
 export type CanalMensagem = 'TELEGRAM' | 'EMAIL'
@@ -178,7 +178,7 @@ export interface Entrega {
   motoristaNome?: string
   status: EntregaStatus
   bagagensCarona: BagagemCarona[]
-  // Um trajeto por tentativa (HU04) — no máximo um com status 'em_execucao'
+  // Um trajeto por tentativa (HU04); no máximo um com status 'em_execucao'
   // por vez (FR-005); reaberturas (HU07) podem acumular vários encerrados.
   trajetos: Trajeto[]
   comprovante?: ComprovanteEntrega
@@ -187,7 +187,7 @@ export interface Entrega {
   criadaEm: string
   pendenteSincronizacao?: boolean
   // HU18: true assim que o passageiro toca no link de convite ao Telegram
-  // (recebido por e-mail) e o bot recebe o /start daquela entrega — estado
+  // (recebido por e-mail) e o bot recebe o /start daquela entrega; estado
   // dinâmico, não um campo do BDO (diferente de telefone/e-mail).
   telegramVinculado?: boolean
 }
@@ -238,7 +238,7 @@ export interface ConfiguracaoTenant {
   basesAeroportuarias: string[]
   companhiasAtendidas: string[]
   periodicidadeFechamento: PeriodicidadeFechamento
-  // HU04/RN14 — limiar de divergência entre a rota inicialmente sugerida e a
+  // HU04/RN14; limiar de divergência entre a rota inicialmente sugerida e a
   // quilometragem final consolidada do trajeto (o que for maior dos dois).
   limiarDivergenciaPercentual: number
   limiarDivergenciaKm: number

@@ -139,7 +139,7 @@ function CartaoEntrega({ entrega, trajeto, tarifaBase }: { entrega: Entrega; tra
           <ul className="mt-1 flex flex-col gap-1">
             {trajeto.ajustes.map((a) => (
               <li key={a.id} className="text-xs text-slate-500">
-                {CAMPO_LABEL[a.campo]}: {a.valorAnterior} → {a.valorNovo} — "{a.justificativa}" ({a.motoristaNome},{' '}
+                {CAMPO_LABEL[a.campo]}: {a.valorAnterior} → {a.valorNovo}, motivo: "{a.justificativa}" ({a.motoristaNome},{' '}
                 {new Date(a.criadoEm).toLocaleString('pt-BR')})
               </li>
             ))}
@@ -180,13 +180,13 @@ export default function RelatorioQuinzenal() {
       </div>
 
       <div className="hidden print:block">
-        <h1 className="text-lg font-bold text-slate-900">Relatório quinzenal — {MOTORISTA_ATUAL.nome}</h1>
+        <h1 className="text-lg font-bold text-slate-900">Relatório quinzenal de {MOTORISTA_ATUAL.nome}</h1>
         <p className="text-xs text-slate-500">Emitido em {new Date().toLocaleString('pt-BR')}</p>
       </div>
 
       <p className="mt-1 text-sm text-slate-600 print:hidden">
         Entregas com trajeto consolidado no período em andamento. Corrija qualquer valor calculado informando uma
-        justificativa — o valor final consolidado do trajeto nunca é sobrescrito, e o fechamento seguinte usa o valor
+        justificativa. O valor final consolidado do trajeto nunca é sobrescrito, e o fechamento seguinte usa o valor
         ajustado mais recente.
       </p>
 

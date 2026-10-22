@@ -101,7 +101,7 @@ export default function EntregasLista() {
             type="button"
             onClick={simularBdoPorEmail}
             className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-blue-700 hover:underline"
-            title="Simula o recebimento automático de um BDO por e-mail — no sistema real acontece sem ação do motorista."
+            title="Simula o recebimento automático de um BDO por e-mail. No sistema real, isso acontece sem ação do motorista."
           >
             <Icone nome="email" /> Simular BDO por e-mail
           </button>

@@ -10,8 +10,8 @@ export default function Home() {
         <h1 className="mt-2 text-4xl font-bold text-slate-900">Milebag</h1>
         <p className="mt-3 max-w-2xl text-lg text-slate-600">
           Gestão de última milha da devolução de bagagens extraviadas. Este protótipo simula, com dados fictícios em
-          memória, os 3 perfis de usuário do sistema — sem back-end real, apenas para validar os fluxos das 21
-          histórias de usuário (HU01–HU21).
+          memória, os 3 perfis de usuário do sistema, sem servidor real, apenas para validar os fluxos das 21
+          histórias de usuário (HU01 a HU21).
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -32,7 +32,7 @@ export default function Home() {
         <p className="mt-12 text-xs text-slate-500">
           Baseado nas especificações em{' '}
           <code className="rounded bg-slate-100 px-1 py-0.5">mile_bag_documentacao/specs/</code>. Os dados digitados
-          aqui ficam salvos só no seu navegador (localStorage) — nada é enviado a um servidor.
+          aqui ficam salvos só no seu navegador (localStorage). Nada é enviado a um servidor.
         </p>
       </div>
     </div>

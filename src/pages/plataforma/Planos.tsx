@@ -90,7 +90,7 @@ export default function Planos() {
         </div>
         <div>
           <label htmlFor="preco" className="text-xs font-medium text-slate-600">
-            Preço mensal (R$) — piloto sem custo, valor de referência futura
+            Preço mensal (R$): sem cobrança no piloto, serve de referência
           </label>
           <input
             id="preco"

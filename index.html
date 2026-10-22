@@ -6,8 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
-    <meta name="description" content="Protótipo navegável do Milebag — gestão de última milha de devolução de bagagens extraviadas." />
-    <title>Milebag — Protótipo</title>
+    <meta name="description" content="Protótipo navegável do Milebag, gestão da última milha na devolução de bagagens extraviadas." />
+    <title>Milebag Protótipo</title>
+    <script>
+      // Aplica o tema antes da primeira pintura (sem piscar o claro para quem usa escuro).
+      // Mesma regra e mesma chave de src/data/tema.ts, que assume depois do carregamento.
+      try {
+        var tema = localStorage.getItem("milebag_prototipo_tema");
+        var escuro = tema === "escuro" || (tema !== "claro" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.tema = escuro ? "escuro" : "claro";
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

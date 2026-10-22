@@ -16,7 +16,7 @@ const CAMPOS_VAZIOS: CamposBdo = {
   etiquetaBagagem: '',
 }
 
-// Exemplo plausível devolvido pela simulação do OCR — os valores são só um
+// Exemplo plausível devolvido pela simulação do OCR; os valores são só um
 // ponto de partida: o motorista sempre revisa e pode corrigir antes de
 // confirmar (RI01 / RN01, tela de conferência obrigatória).
 function gerarExtracaoSimulada(): CamposBdo {

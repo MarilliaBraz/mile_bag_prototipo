@@ -2,10 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { aplicarTema, temaSalvo } from './data/tema'
+import { iniciarTema } from './data/tema'
 
-// Antes de renderizar, para não piscar o tema claro ao abrir.
-aplicarTema(temaSalvo())
+// Antes de renderizar, para não piscar o tema errado ao abrir.
+iniciarTema()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
