@@ -6,6 +6,14 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 [Versionamento Semântico](https://semver.org/lang/pt-BR/), como pede o item 2.3 do `CONVENTIONS.md`
 (repositório `mile_bag_audite`).
 
+## [Não lançado]
+
+### Alterado
+
+- Código reorganizado conforme o `CONVENTIONS.md` §1.2, espelhando o `mile_bag_app`, sem mudança de
+  comportamento: telas em `features/motorista`, `features/back-office` e `features/auth`, cada feature com
+  `components/` e um `index.ts`; `shared/` organizado em `components/`, `hooks/`, `services/`, `types/` e `utils/`.
+
 ## [0.1.0] - 2026-10-05
 
 Primeira versão registrada neste arquivo. As telas anteriores (HU01 a HU21) estão no histórico do Git.
