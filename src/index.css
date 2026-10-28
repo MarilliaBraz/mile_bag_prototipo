@@ -202,7 +202,7 @@ main[tabindex="-1"]:focus-visible {
 }
 
 /* ---------- Tema escuro ----------
- * Uma única definição: src/data/tema.ts resolve o "Automático" consultando o
+ * Uma única definição: src/shared/utils/tema.ts resolve o "Automático" consultando o
  * sistema e sempre grava data-tema="claro" ou "escuro" no <html>. Em vez de
  * reescrever cada tela, redefine as variáveis de cor que as classes do
  * Tailwind leem. Alto contraste e impressão continuam sempre claros.
