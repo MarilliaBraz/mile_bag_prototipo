@@ -21,17 +21,23 @@ npm run dev
 
 ```
 src/
-├── types.ts            # Tipos do domínio (versão simplificada do data-model.md de cada HU)
-├── data/
-│   ├── seed.ts          # Dados iniciais fictícios (1 tenant, motoristas, entregas em vários estágios)
-│   ├── store.tsx        # "Back-end" simulado: Context + localStorage, uma ação por HU
-│   └── statusLabels.ts  # Rótulos e cores dos status de Entrega e de Convite
-├── components/          # Componentes pequenos reutilizados entre telas (ex.: Badge)
-├── layouts/              # Casca de cada área do sistema (motorista, tenant, plataforma)
-└── pages/
-    ├── motorista/        # HU01 a HU08 e HU17 a HU21: aplicação do motorista (PWA)
-    ├── tenant/            # HU09 a HU13: administração da empresa
-    └── plataforma/        # HU14 a HU16: administração da plataforma
+├── features/            # Organização por feature, igual ao mile_bag_app (CONVENTIONS §1.2)
+│   ├── auth/            # Escolha de perfil (Home) e login simulado
+│   ├── motorista/       # HU01 a HU08 e HU17 a HU21: aplicação do motorista (PWA)
+│   │   ├── painel-entregas/  captura-bdo/  rota/  comprovante-entrega/
+│   │   ├── ocorrencia/  mensageria/  relatorio-quinzenal/  offline-sync/  conta/
+│   │   └── layout/      # Casca da área do motorista
+│   └── back-office/     # HU09 a HU16: administração da empresa e da plataforma
+│       ├── dashboard/  tarifas/  pedagios/  fechamento/  configuracao-tenant/
+│       ├── tenant-onboarding/  planos/
+│       └── layout/      # Cascas das áreas da empresa e da plataforma
+│                        # (cada feature tem components/ e um index.ts com o que o App.tsx usa)
+└── shared/              # Reutilizado por duas ou mais features
+    ├── components/      # Componentes pequenos (ex.: Badge, Icone) e RequireAuth
+    ├── hooks/
+    ├── services/        # "Back-end" simulado: auth.tsx, store.tsx (Context + localStorage) e seed.ts (dados fictícios)
+    ├── types/           # Tipos do domínio (versão simplificada do data-model.md de cada HU)
+    └── utils/           # Formatação, rótulos/cores de status, perfis e tema
 ```
 
 ## Áreas navegáveis
