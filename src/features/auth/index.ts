@@ -1,0 +1,3 @@
+// API pública da feature: o que fica de fora dela (rotas do App.tsx).
+export { default as Home } from './components/Home'
+export { default as Login } from './components/Login'

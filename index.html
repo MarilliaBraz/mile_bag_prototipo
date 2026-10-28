@@ -10,7 +10,7 @@
     <title>Milebag Protótipo</title>
     <script>
       // Aplica o tema antes da primeira pintura (sem piscar o claro para quem usa escuro).
-      // Mesma regra e mesma chave de src/data/tema.ts, que assume depois do carregamento.
+      // Mesma regra e mesma chave de src/shared/utils/tema.ts, que assume depois do carregamento.
       try {
         var tema = localStorage.getItem("milebag_prototipo_tema");
         var escuro = tema === "escuro" || (tema !== "claro" && matchMedia("(prefers-color-scheme: dark)").matches);
